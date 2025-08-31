@@ -1,0 +1,630 @@
+2025-05-05 11:49:00,158 - ApiModels - INFO - Heart disease model loaded successfully
+2025-05-05 11:49:00,197 - ApiModels - INFO - Diabetes model loaded successfully
+2025-05-05 11:49:00,229 - ApiModels - INFO - Symptom checker model loaded successfully
+2025-05-05 11:49:00,389 - ApiModels - INFO - Request: POST /api/heart-disease-prediction
+2025-05-05 11:49:00,389 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      25,
+      1,
+      2,
+      93,
+      122,
+      1,
+      1,
+      61,
+      1,
+      0.5,
+      1,
+      2,
+      2
+    ]
+  ]
+}
+2025-05-05 11:49:00,433 - ApiModels - INFO - Heart disease prediction request: {'data': [[25, 1, 2, 93, 122, 1, 1, 61, 1, 0.5, 1, 2, 2]]}
+2025-05-05 11:49:00,433 - ApiModels - INFO - Received heart disease data in array format: [25, 1, 2, 93, 122, 1, 1, 61, 1, 0.5, 1, 2, 2]
+2025-05-05 11:49:00,450 - ApiModels - INFO - Created DataFrame for heart disease prediction:    age  sex  cp  trestbps  chol  fbs  restecg  thalach  exang  oldpeak  slope  ca  thal
+0   25    1   2        93   122    1        1       61      1      0.5      1   2     2
+2025-05-05 11:49:00,461 - ApiModels - INFO - Heart disease prediction: POSITIVE, probability: 0.7893015913447723
+2025-05-05 11:49:00,462 - ApiModels - INFO - Heart disease response: {'prediction': 'POSITIVE', 'probability': 0.79, 'status': 'success', 'request_data': {'age': 25, 'sex': 1, 'cp': 2, 'trestbps': 93, 'chol': 122, 'fbs': 1, 'restecg': 1, 'thalach': 61, 'exang': 1, 'oldpeak': 0.5, 'slope': 1, 'ca': 2, 'thal': 2}}
+2025-05-05 11:50:31,128 - ApiModels - INFO - Request: POST /api/diabetes-prediction
+2025-05-05 11:50:31,128 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      0,
+      28,
+      0.3,
+      0.5,
+      3.5,
+      58,
+      7,
+      5,
+      5,
+      0.5,
+      50
+    ]
+  ]
+}
+2025-05-05 11:50:31,129 - ApiModels - INFO - Diabetes prediction request: {'data': [[0, 28, 0.3, 0.5, 3.5, 58, 7, 5, 5, 0.5, 50]]}
+2025-05-05 11:50:31,129 - ApiModels - INFO - Received diabetes data in array format: [0, 28, 0.3, 0.5, 3.5, 58, 7, 5, 5, 0.5, 50]
+2025-05-05 11:50:31,130 - ApiModels - INFO - Created patient data for diabetes prediction: {'Gender': 0, 'AGE': 28, 'Urea': 0.3, 'Cr': 0.5, 'HbA1c': 3.5, 'Chol': 58, 'TG': 7, 'HDL': 5, 'LDL': 5, 'VLDL': 0.5, 'BMI': 50}
+2025-05-05 11:50:31,145 - ApiModels - INFO - Diabetes risk assessment complete: {'original_class': 'Y', 'binary_result': 'Positive', 'risk_level': 'Low', 'clinical_status': 'Diabetic', 'probabilities': {'N': np.float64(0.16), 'P': np.float64(0.24), 'Y': np.float64(0.595)}, 'recommendation': 'Medical consultation recommended. Early diabetes management needed.', 'key_indicators': {'HbA1c': 3.5, 'BMI': 50}, 'request_data': {'Gender': 0, 'AGE': 28, 'Urea': 0.3, 'Cr': 0.5, 'HbA1c': 3.5, 'Chol': 58, 'TG': 7, 'HDL': 5, 'LDL': 5, 'VLDL': 0.5, 'BMI': 50}, 'status': 'success'}
+2025-05-05 11:50:50,026 - ApiModels - INFO - Request: POST /api/diabetes-prediction
+2025-05-05 11:50:50,026 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      0,
+      45,
+      5.5,
+      74,
+      5.7,
+      50,
+      1,
+      1,
+      3,
+      0.6,
+      26
+    ]
+  ]
+}
+2025-05-05 11:50:50,027 - ApiModels - INFO - Diabetes prediction request: {'data': [[0, 45, 5.5, 74, 5.7, 50, 1, 1, 3, 0.6, 26]]}
+2025-05-05 11:50:50,027 - ApiModels - INFO - Received diabetes data in array format: [0, 45, 5.5, 74, 5.7, 50, 1, 1, 3, 0.6, 26]
+2025-05-05 11:50:50,028 - ApiModels - INFO - Created patient data for diabetes prediction: {'Gender': 0, 'AGE': 45, 'Urea': 5.5, 'Cr': 74, 'HbA1c': 5.7, 'Chol': 50, 'TG': 1, 'HDL': 1, 'LDL': 3, 'VLDL': 0.6, 'BMI': 26}
+2025-05-05 11:50:50,040 - ApiModels - INFO - Diabetes risk assessment complete: {'original_class': 'P', 'binary_result': 'Negative', 'risk_level': 'Low', 'clinical_status': 'Pre-diabetic', 'probabilities': {'N': np.float64(0.04), 'P': np.float64(0.51), 'Y': np.float64(0.44)}, 'recommendation': 'Immediate lifestyle intervention. Follow-up in 3 months.', 'key_indicators': {'HbA1c': 5.7, 'BMI': 26}, 'request_data': {'Gender': 0, 'AGE': 45, 'Urea': 5.5, 'Cr': 74, 'HbA1c': 5.7, 'Chol': 50, 'TG': 1, 'HDL': 1, 'LDL': 3, 'VLDL': 0.6, 'BMI': 26}, 'status': 'success'}
+2025-05-05 11:51:16,970 - ApiModels - INFO - Request: POST /api/diabetes-prediction
+2025-05-05 11:51:16,970 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      0,
+      42,
+      5.4,
+      53,
+      5.8,
+      55,
+      3,
+      1,
+      3,
+      1.7,
+      23
+    ]
+  ]
+}
+2025-05-05 11:51:16,971 - ApiModels - INFO - Diabetes prediction request: {'data': [[0, 42, 5.4, 53, 5.8, 55, 3, 1, 3, 1.7, 23]]}
+2025-05-05 11:51:16,972 - ApiModels - INFO - Received diabetes data in array format: [0, 42, 5.4, 53, 5.8, 55, 3, 1, 3, 1.7, 23]
+2025-05-05 11:51:16,972 - ApiModels - INFO - Created patient data for diabetes prediction: {'Gender': 0, 'AGE': 42, 'Urea': 5.4, 'Cr': 53, 'HbA1c': 5.8, 'Chol': 55, 'TG': 3, 'HDL': 1, 'LDL': 3, 'VLDL': 1.7, 'BMI': 23}
+2025-05-05 11:51:16,982 - ApiModels - INFO - Diabetes risk assessment complete: {'original_class': 'P', 'binary_result': 'Negative', 'risk_level': 'Medium', 'clinical_status': 'Pre-diabetic', 'probabilities': {'N': np.float64(0.03), 'P': np.float64(0.8), 'Y': np.float64(0.17)}, 'recommendation': 'Immediate lifestyle intervention. Follow-up in 3 months.', 'key_indicators': {'HbA1c': 5.8, 'BMI': 23}, 'request_data': {'Gender': 0, 'AGE': 42, 'Urea': 5.4, 'Cr': 53, 'HbA1c': 5.8, 'Chol': 55, 'TG': 3, 'HDL': 1, 'LDL': 3, 'VLDL': 1.7, 'BMI': 23}, 'status': 'success'}
+2025-05-05 11:51:29,206 - ApiModels - INFO - Request: GET /api/symptoms
+2025-05-05 11:51:29,207 - ApiModels - INFO - Available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain', 'acute liver failure', 'restlessness', 'slurred speech', 'blurred and distorted vision', 'vomiting', 'internal itching', 'silver like dusting', 'brittle nails', 'red spots over body', 'blackheads', 'altered sensorium', 'congestion', 'weakness in limbs', 'shivering', 'distention of abdomen']... (total: 131)
+2025-05-05 13:51:38,457 - ApiModels - INFO - Heart disease model loaded successfully
+2025-05-05 13:51:38,478 - ApiModels - INFO - Diabetes model loaded successfully
+2025-05-05 13:51:38,503 - ApiModels - INFO - Symptom checker model loaded successfully
+2025-05-05 13:52:17,558 - ApiModels - INFO - Request: POST /api/diabetes-prediction
+2025-05-05 13:52:17,558 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      1,
+      30,
+      4.7,
+      46,
+      4.9,
+      60,
+      26,
+      2,
+      1,
+      0.5,
+      22.5
+    ]
+  ]
+}
+2025-05-05 13:52:17,600 - ApiModels - INFO - Diabetes prediction request: {'data': [[1, 30, 4.7, 46, 4.9, 60, 26, 2, 1, 0.5, 22.5]]}
+2025-05-05 13:52:17,601 - ApiModels - INFO - Received diabetes data in array format: [1, 30, 4.7, 46, 4.9, 60, 26, 2, 1, 0.5, 22.5]
+2025-05-05 13:52:17,601 - ApiModels - INFO - Created patient data for diabetes prediction: {'Gender': 1, 'AGE': 30, 'Urea': 4.7, 'Cr': 46, 'HbA1c': 4.9, 'Chol': 60, 'TG': 26, 'HDL': 2, 'LDL': 1, 'VLDL': 0.5, 'BMI': 22.5}
+2025-05-05 13:52:17,627 - ApiModels - INFO - Diabetes risk assessment complete: {'original_class': 'N', 'binary_result': 'Negative', 'risk_level': 'Low', 'clinical_status': 'Non-diabetic', 'probabilities': {'N': np.float64(0.52), 'P': np.float64(0.13), 'Y': np.float64(0.35)}, 'recommendation': 'Minor lifestyle adjustments recommended. Follow-up in 1 year.', 'key_indicators': {'HbA1c': 4.9, 'BMI': 22.5}, 'request_data': {'Gender': 1, 'AGE': 30, 'Urea': 4.7, 'Cr': 46, 'HbA1c': 4.9, 'Chol': 60, 'TG': 26, 'HDL': 2, 'LDL': 1, 'VLDL': 0.5, 'BMI': 22.5}, 'status': 'success'}
+2025-05-05 13:59:34,927 - ApiModels - INFO - Request: POST /api/heart-disease-prediction
+2025-05-05 13:59:34,927 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      45,
+      0,
+      0,
+      125,
+      180,
+      0,
+      0,
+      170,
+      0,
+      0,
+      0,
+      0,
+      2
+    ]
+  ]
+}
+2025-05-05 13:59:34,929 - ApiModels - INFO - Heart disease prediction request: {'data': [[45, 0, 0, 125, 180, 0, 0, 170, 0, 0, 0, 0, 2]]}
+2025-05-05 13:59:34,929 - ApiModels - INFO - Received heart disease data in array format: [45, 0, 0, 125, 180, 0, 0, 170, 0, 0, 0, 0, 2]
+2025-05-05 13:59:34,949 - ApiModels - INFO - Created DataFrame for heart disease prediction:    age  sex  cp  trestbps  chol  fbs  restecg  thalach  exang  oldpeak  slope  ca  thal
+0   45    0   0       125   180    0        0      170      0        0      0   0     2
+2025-05-05 13:59:34,969 - ApiModels - INFO - Heart disease prediction: POSITIVE, probability: 0.9862181929940239
+2025-05-05 13:59:34,969 - ApiModels - INFO - Heart disease response: {'prediction': 'POSITIVE', 'probability': 0.99, 'status': 'success', 'request_data': {'age': 45, 'sex': 0, 'cp': 0, 'trestbps': 125, 'chol': 180, 'fbs': 0, 'restecg': 0, 'thalach': 170, 'exang': 0, 'oldpeak': 0, 'slope': 0, 'ca': 0, 'thal': 2}}
+2025-05-05 13:59:35,082 - ApiModels - INFO - Request: POST /api/heart-disease-prediction
+2025-05-05 13:59:35,082 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      45,
+      0,
+      0,
+      125,
+      180,
+      0,
+      0,
+      170,
+      0,
+      0,
+      0,
+      0,
+      2
+    ]
+  ]
+}
+2025-05-05 13:59:35,084 - ApiModels - INFO - Heart disease prediction request: {'data': [[45, 0, 0, 125, 180, 0, 0, 170, 0, 0, 0, 0, 2]]}
+2025-05-05 13:59:35,084 - ApiModels - INFO - Received heart disease data in array format: [45, 0, 0, 125, 180, 0, 0, 170, 0, 0, 0, 0, 2]
+2025-05-05 13:59:35,096 - ApiModels - INFO - Created DataFrame for heart disease prediction:    age  sex  cp  trestbps  chol  fbs  restecg  thalach  exang  oldpeak  slope  ca  thal
+0   45    0   0       125   180    0        0      170      0        0      0   0     2
+2025-05-05 13:59:35,102 - ApiModels - INFO - Heart disease prediction: POSITIVE, probability: 0.9862181929940239
+2025-05-05 13:59:35,102 - ApiModels - INFO - Heart disease response: {'prediction': 'POSITIVE', 'probability': 0.99, 'status': 'success', 'request_data': {'age': 45, 'sex': 0, 'cp': 0, 'trestbps': 125, 'chol': 180, 'fbs': 0, 'restecg': 0, 'thalach': 170, 'exang': 0, 'oldpeak': 0, 'slope': 0, 'ca': 0, 'thal': 2}}
+2025-05-05 14:01:01,610 - ApiModels - INFO - Request: POST /api/heart-disease-prediction
+2025-05-05 14:01:01,611 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      45,
+      0,
+      0,
+      125,
+      180,
+      0,
+      0,
+      170,
+      0,
+      0,
+      0,
+      0,
+      2
+    ]
+  ]
+}
+2025-05-05 14:01:01,612 - ApiModels - INFO - Heart disease prediction request: {'data': [[45, 0, 0, 125, 180, 0, 0, 170, 0, 0, 0, 0, 2]]}
+2025-05-05 14:01:01,612 - ApiModels - INFO - Received heart disease data in array format: [45, 0, 0, 125, 180, 0, 0, 170, 0, 0, 0, 0, 2]
+2025-05-05 14:01:01,620 - ApiModels - INFO - Created DataFrame for heart disease prediction:    age  sex  cp  trestbps  chol  fbs  restecg  thalach  exang  oldpeak  slope  ca  thal
+0   45    0   0       125   180    0        0      170      0        0      0   0     2
+2025-05-05 14:01:01,625 - ApiModels - INFO - Heart disease prediction: POSITIVE, probability: 0.9862181929940239
+2025-05-05 14:01:01,626 - ApiModels - INFO - Heart disease response: {'prediction': 'POSITIVE', 'probability': 0.99, 'status': 'success', 'request_data': {'age': 45, 'sex': 0, 'cp': 0, 'trestbps': 125, 'chol': 180, 'fbs': 0, 'restecg': 0, 'thalach': 170, 'exang': 0, 'oldpeak': 0, 'slope': 0, 'ca': 0, 'thal': 2}}
+2025-05-05 14:01:01,640 - ApiModels - INFO - Request: POST /api/heart-disease-prediction
+2025-05-05 14:01:01,640 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      45,
+      0,
+      0,
+      125,
+      180,
+      0,
+      0,
+      170,
+      0,
+      0,
+      0,
+      0,
+      2
+    ]
+  ]
+}
+2025-05-05 14:01:01,642 - ApiModels - INFO - Heart disease prediction request: {'data': [[45, 0, 0, 125, 180, 0, 0, 170, 0, 0, 0, 0, 2]]}
+2025-05-05 14:01:01,643 - ApiModels - INFO - Received heart disease data in array format: [45, 0, 0, 125, 180, 0, 0, 170, 0, 0, 0, 0, 2]
+2025-05-05 14:01:01,651 - ApiModels - INFO - Created DataFrame for heart disease prediction:    age  sex  cp  trestbps  chol  fbs  restecg  thalach  exang  oldpeak  slope  ca  thal
+0   45    0   0       125   180    0        0      170      0        0      0   0     2
+2025-05-05 14:01:01,656 - ApiModels - INFO - Heart disease prediction: POSITIVE, probability: 0.9862181929940239
+2025-05-05 14:01:01,657 - ApiModels - INFO - Heart disease response: {'prediction': 'POSITIVE', 'probability': 0.99, 'status': 'success', 'request_data': {'age': 45, 'sex': 0, 'cp': 0, 'trestbps': 125, 'chol': 180, 'fbs': 0, 'restecg': 0, 'thalach': 170, 'exang': 0, 'oldpeak': 0, 'slope': 0, 'ca': 0, 'thal': 2}}
+2025-05-05 21:42:46,497 - ApiModels - INFO - Heart disease model loaded successfully
+2025-05-05 21:42:46,523 - ApiModels - INFO - Diabetes model loaded successfully
+2025-05-05 21:42:46,552 - ApiModels - INFO - Symptom checker model loaded successfully
+2025-05-05 22:09:50,596 - ApiModels - INFO - Request: GET /api/symptoms
+2025-05-05 22:09:50,638 - ApiModels - INFO - Available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain', 'acute liver failure', 'restlessness', 'slurred speech', 'blurred and distorted vision', 'vomiting', 'internal itching', 'silver like dusting', 'brittle nails', 'red spots over body', 'blackheads', 'altered sensorium', 'congestion', 'weakness in limbs', 'shivering', 'distention of abdomen']... (total: 131)
+2025-05-05 22:52:08,532 - ApiModels - INFO - Request: POST /api/heart-disease-prediction
+2025-05-05 22:52:08,532 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      45,
+      0,
+      0,
+      125,
+      180,
+      0,
+      0,
+      170,
+      0,
+      0,
+      0,
+      0,
+      2
+    ]
+  ]
+}
+2025-05-05 22:52:08,535 - ApiModels - INFO - Heart disease prediction request: {'data': [[45, 0, 0, 125, 180, 0, 0, 170, 0, 0, 0, 0, 2]]}
+2025-05-05 22:52:08,536 - ApiModels - INFO - Received heart disease data in array format: [45, 0, 0, 125, 180, 0, 0, 170, 0, 0, 0, 0, 2]
+2025-05-05 22:52:08,561 - ApiModels - INFO - Created DataFrame for heart disease prediction:    age  sex  cp  trestbps  ...  oldpeak  slope  ca  thal
+0   45    0   0       125  ...        0      0   0     2
+
+[1 rows x 13 columns]
+2025-05-05 22:52:08,572 - ApiModels - INFO - Heart disease prediction: POSITIVE, probability: 0.9862181929940239
+2025-05-05 22:52:08,572 - ApiModels - INFO - Heart disease response: {'prediction': 'POSITIVE', 'probability': 0.99, 'status': 'success', 'request_data': {'age': 45, 'sex': 0, 'cp': 0, 'trestbps': 125, 'chol': 180, 'fbs': 0, 'restecg': 0, 'thalach': 170, 'exang': 0, 'oldpeak': 0, 'slope': 0, 'ca': 0, 'thal': 2}}
+2025-05-05 22:52:08,582 - ApiModels - INFO - Request: POST /api/heart-disease-prediction
+2025-05-05 22:52:08,583 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      45,
+      0,
+      0,
+      125,
+      180,
+      0,
+      0,
+      170,
+      0,
+      0,
+      0,
+      0,
+      2
+    ]
+  ]
+}
+2025-05-05 22:52:08,584 - ApiModels - INFO - Heart disease prediction request: {'data': [[45, 0, 0, 125, 180, 0, 0, 170, 0, 0, 0, 0, 2]]}
+2025-05-05 22:52:08,584 - ApiModels - INFO - Received heart disease data in array format: [45, 0, 0, 125, 180, 0, 0, 170, 0, 0, 0, 0, 2]
+2025-05-05 22:52:08,591 - ApiModels - INFO - Created DataFrame for heart disease prediction:    age  sex  cp  trestbps  ...  oldpeak  slope  ca  thal
+0   45    0   0       125  ...        0      0   0     2
+
+[1 rows x 13 columns]
+2025-05-05 22:52:08,596 - ApiModels - INFO - Heart disease prediction: POSITIVE, probability: 0.9862181929940239
+2025-05-05 22:52:08,596 - ApiModels - INFO - Heart disease response: {'prediction': 'POSITIVE', 'probability': 0.99, 'status': 'success', 'request_data': {'age': 45, 'sex': 0, 'cp': 0, 'trestbps': 125, 'chol': 180, 'fbs': 0, 'restecg': 0, 'thalach': 170, 'exang': 0, 'oldpeak': 0, 'slope': 0, 'ca': 0, 'thal': 2}}
+2025-05-14 00:34:30,423 - ApiModels - INFO - Heart disease model loaded successfully
+2025-05-14 00:34:30,444 - ApiModels - INFO - Diabetes model loaded successfully
+2025-05-14 00:34:30,472 - ApiModels - INFO - Symptom checker model loaded successfully
+2025-05-14 00:39:57,551 - ApiModels - INFO - Request: GET /api/symptoms
+2025-05-14 00:39:57,593 - ApiModels - INFO - Available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain', 'acute liver failure', 'restlessness', 'slurred speech', 'blurred and distorted vision', 'vomiting', 'internal itching', 'silver like dusting', 'brittle nails', 'red spots over body', 'blackheads', 'altered sensorium', 'congestion', 'weakness in limbs', 'shivering', 'distention of abdomen']... (total: 131)
+2025-05-14 00:42:57,939 - ApiModels - INFO - Request: GET /api/symptoms
+2025-05-14 00:42:57,940 - ApiModels - INFO - Available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain', 'acute liver failure', 'restlessness', 'slurred speech', 'blurred and distorted vision', 'vomiting', 'internal itching', 'silver like dusting', 'brittle nails', 'red spots over body', 'blackheads', 'altered sensorium', 'congestion', 'weakness in limbs', 'shivering', 'distention of abdomen']... (total: 131)
+2025-05-14 00:43:09,636 - ApiModels - INFO - Request: GET /api/symptoms
+2025-05-14 00:43:09,637 - ApiModels - INFO - Available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain', 'acute liver failure', 'restlessness', 'slurred speech', 'blurred and distorted vision', 'vomiting', 'internal itching', 'silver like dusting', 'brittle nails', 'red spots over body', 'blackheads', 'altered sensorium', 'congestion', 'weakness in limbs', 'shivering', 'distention of abdomen']... (total: 131)
+2025-05-14 00:43:09,648 - ApiModels - INFO - Request: POST /api/predict
+2025-05-14 00:43:09,649 - ApiModels - INFO - Request body: {"symptoms":["distention of abdomen","pain in anal region","loss of appetite","pain during bowel movements","stomach bleeding"],"top_n":3}
+2025-05-14 00:43:09,651 - ApiModels - INFO - Symptom prediction request: {'symptoms': ['distention of abdomen', 'pain in anal region', 'loss of appetite', 'pain during bowel movements', 'stomach bleeding'], 'top_n': 3}
+2025-05-14 00:43:09,652 - ApiModels - INFO - Original symptoms: ['distention of abdomen', 'pain in anal region', 'loss of appetite', 'pain during bowel movements', 'stomach bleeding']
+2025-05-14 00:43:09,652 - ApiModels - INFO - Normalized symptoms: ['distention_of_abdomen', 'pain_in_anal_region', 'loss_of_appetite', 'pain_during_bowel_movements', 'stomach_bleeding']
+2025-05-14 00:43:09,652 - ApiModels - INFO - Sample of available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain']
+2025-05-14 00:43:09,657 - ApiModels - INFO - Symptom prediction response: {'predictions': [{'disease': 'Dimorphic hemmorhoids(piles)', 'probability': 0.95, 'description': 'No description available.', 'precautions': ['avoid fatty spicy food', 'consume witch hazel', 'warm bath with epsom salt', 'consume alovera juice']}, {'disease': 'Acne', 'probability': 0.01, 'description': 'Acne vulgaris is the formation of comedones, papules, pustules, nodules, and/or cysts as a result of obstruction and inflammation of pilosebaceous units (hair follicles and their accompanying sebaceous gland). Acne develops on the face and upper trunk. It most often affects adolescents.', 'precautions': ['bath twice', 'avoid fatty spicy food', 'drink plenty of water', 'avoid too many products']}, {'disease': 'Urinary tract infection', 'probability': 0.01, 'description': 'Urinary tract infection: An infection of the kidney, ureter, bladder, or urethra. Abbreviated UTI. Not everyone with a UTI has symptoms, but common symptoms include a frequent urge to urinate and pain or burning when urinating.', 'precautions': ['drink plenty of water', 'increase vitamin c intake', 'drink cranberry juice', 'take probiotics']}], 'status': 'success', 'request_data': {'symptoms': ['distention of abdomen', 'pain in anal region', 'loss of appetite', 'pain during bowel movements', 'stomach bleeding'], 'top_n': 3}}
+2025-05-14 00:46:43,990 - ApiModels - INFO - Request: GET /api/symptoms
+2025-05-14 00:46:43,991 - ApiModels - INFO - Available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain', 'acute liver failure', 'restlessness', 'slurred speech', 'blurred and distorted vision', 'vomiting', 'internal itching', 'silver like dusting', 'brittle nails', 'red spots over body', 'blackheads', 'altered sensorium', 'congestion', 'weakness in limbs', 'shivering', 'distention of abdomen']... (total: 131)
+2025-05-14 00:51:32,254 - ApiModels - INFO - Request: POST /api/diabetes-prediction
+2025-05-14 00:51:32,255 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      1,
+      30,
+      4.7,
+      46,
+      4.9,
+      180,
+      90,
+      60,
+      100,
+      18,
+      22.5
+    ]
+  ]
+}
+2025-05-14 00:51:32,256 - ApiModels - INFO - Diabetes prediction request: {'data': [[1, 30, 4.7, 46, 4.9, 180, 90, 60, 100, 18, 22.5]]}
+2025-05-14 00:51:32,256 - ApiModels - INFO - Received diabetes data in array format: [1, 30, 4.7, 46, 4.9, 180, 90, 60, 100, 18, 22.5]
+2025-05-14 00:51:32,256 - ApiModels - INFO - Created patient data for diabetes prediction: {'Gender': 1, 'AGE': 30, 'Urea': 4.7, 'Cr': 46, 'HbA1c': 4.9, 'Chol': 180, 'TG': 90, 'HDL': 60, 'LDL': 100, 'VLDL': 18, 'BMI': 22.5}
+2025-05-14 00:51:32,262 - ApiModels - INFO - Diabetes risk assessment complete: {'original_class': 'Y', 'binary_result': 'Positive', 'risk_level': 'Low', 'clinical_status': 'Diabetic', 'probabilities': {'N': np.float64(0.32), 'P': np.float64(0.17), 'Y': np.float64(0.51)}, 'recommendation': 'Medical consultation recommended. Early diabetes management needed.', 'key_indicators': {'HbA1c': 4.9, 'BMI': 22.5}, 'request_data': {'Gender': 1, 'AGE': 30, 'Urea': 4.7, 'Cr': 46, 'HbA1c': 4.9, 'Chol': 180, 'TG': 90, 'HDL': 60, 'LDL': 100, 'VLDL': 18, 'BMI': 22.5}, 'status': 'success'}
+2025-05-14 00:52:44,269 - ApiModels - INFO - Request: POST /api/heart-disease-prediction
+2025-05-14 00:52:44,269 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      65,
+      1,
+      3,
+      160,
+      280,
+      1,
+      2,
+      120,
+      1,
+      4,
+      2,
+      3,
+      3
+    ]
+  ]
+}
+2025-05-14 00:52:44,270 - ApiModels - INFO - Heart disease prediction request: {'data': [[65, 1, 3, 160, 280, 1, 2, 120, 1, 4, 2, 3, 3]]}
+2025-05-14 00:52:44,270 - ApiModels - INFO - Received heart disease data in array format: [65, 1, 3, 160, 280, 1, 2, 120, 1, 4, 2, 3, 3]
+2025-05-14 00:52:44,278 - ApiModels - INFO - Created DataFrame for heart disease prediction:    age  sex  cp  trestbps  chol  fbs  restecg  thalach  exang  oldpeak  slope  ca  thal
+0   65    1   3       160   280    1        2      120      1        4      2   3     3
+2025-05-14 00:52:44,281 - ApiModels - INFO - Heart disease prediction: NEGATIVE, probability: 0.22330005010060225
+2025-05-14 00:52:44,281 - ApiModels - INFO - Heart disease response: {'prediction': 'NEGATIVE', 'probability': 0.22, 'status': 'success', 'request_data': {'age': 65, 'sex': 1, 'cp': 3, 'trestbps': 160, 'chol': 280, 'fbs': 1, 'restecg': 2, 'thalach': 120, 'exang': 1, 'oldpeak': 4, 'slope': 2, 'ca': 3, 'thal': 3}}
+2025-05-14 00:53:00,987 - ApiModels - INFO - Request: POST /api/diabetes-prediction
+2025-05-14 00:53:00,987 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      0,
+      45,
+      5.5,
+      74,
+      5.7,
+      230,
+      150,
+      45,
+      150,
+      30,
+      26
+    ]
+  ]
+}
+2025-05-14 00:53:00,988 - ApiModels - INFO - Diabetes prediction request: {'data': [[0, 45, 5.5, 74, 5.7, 230, 150, 45, 150, 30, 26]]}
+2025-05-14 00:53:00,988 - ApiModels - INFO - Received diabetes data in array format: [0, 45, 5.5, 74, 5.7, 230, 150, 45, 150, 30, 26]
+2025-05-14 00:53:00,988 - ApiModels - INFO - Created patient data for diabetes prediction: {'Gender': 0, 'AGE': 45, 'Urea': 5.5, 'Cr': 74, 'HbA1c': 5.7, 'Chol': 230, 'TG': 150, 'HDL': 45, 'LDL': 150, 'VLDL': 30, 'BMI': 26}
+2025-05-14 00:53:00,993 - ApiModels - INFO - Diabetes risk assessment complete: {'original_class': 'P', 'binary_result': 'Negative', 'risk_level': 'Low', 'clinical_status': 'Pre-diabetic', 'probabilities': {'N': np.float64(0.04), 'P': np.float64(0.6), 'Y': np.float64(0.35100000000000003)}, 'recommendation': 'Immediate lifestyle intervention. Follow-up in 3 months.', 'key_indicators': {'HbA1c': 5.7, 'BMI': 26}, 'request_data': {'Gender': 0, 'AGE': 45, 'Urea': 5.5, 'Cr': 74, 'HbA1c': 5.7, 'Chol': 230, 'TG': 150, 'HDL': 45, 'LDL': 150, 'VLDL': 30, 'BMI': 26}, 'status': 'success'}
+2025-05-14 00:54:00,480 - ApiModels - INFO - Request: POST /api/heart-disease-prediction
+2025-05-14 00:54:00,480 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      65,
+      1,
+      3,
+      160,
+      280,
+      1,
+      2,
+      120,
+      1,
+      4,
+      2,
+      3,
+      3
+    ]
+  ]
+}
+2025-05-14 00:54:00,481 - ApiModels - INFO - Heart disease prediction request: {'data': [[65, 1, 3, 160, 280, 1, 2, 120, 1, 4, 2, 3, 3]]}
+2025-05-14 00:54:00,481 - ApiModels - INFO - Received heart disease data in array format: [65, 1, 3, 160, 280, 1, 2, 120, 1, 4, 2, 3, 3]
+2025-05-14 00:54:00,487 - ApiModels - INFO - Created DataFrame for heart disease prediction:    age  sex  cp  trestbps  chol  fbs  restecg  thalach  exang  oldpeak  slope  ca  thal
+0   65    1   3       160   280    1        2      120      1        4      2   3     3
+2025-05-14 00:54:00,490 - ApiModels - INFO - Heart disease prediction: NEGATIVE, probability: 0.22330005010060225
+2025-05-14 00:54:00,490 - ApiModels - INFO - Heart disease response: {'prediction': 'NEGATIVE', 'probability': 0.22, 'status': 'success', 'request_data': {'age': 65, 'sex': 1, 'cp': 3, 'trestbps': 160, 'chol': 280, 'fbs': 1, 'restecg': 2, 'thalach': 120, 'exang': 1, 'oldpeak': 4, 'slope': 2, 'ca': 3, 'thal': 3}}
+2025-05-14 00:57:36,722 - ApiModels - INFO - Request: POST /api/heart-disease-prediction
+2025-05-14 00:57:36,722 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      65,
+      1,
+      3,
+      160,
+      280,
+      1,
+      2,
+      120,
+      1,
+      4,
+      2,
+      3,
+      3
+    ]
+  ]
+}
+2025-05-14 00:57:36,723 - ApiModels - INFO - Heart disease prediction request: {'data': [[65, 1, 3, 160, 280, 1, 2, 120, 1, 4, 2, 3, 3]]}
+2025-05-14 00:57:36,723 - ApiModels - INFO - Received heart disease data in array format: [65, 1, 3, 160, 280, 1, 2, 120, 1, 4, 2, 3, 3]
+2025-05-14 00:57:36,731 - ApiModels - INFO - Created DataFrame for heart disease prediction:    age  sex  cp  trestbps  chol  fbs  restecg  thalach  exang  oldpeak  slope  ca  thal
+0   65    1   3       160   280    1        2      120      1        4      2   3     3
+2025-05-14 00:57:36,736 - ApiModels - INFO - Heart disease prediction: NEGATIVE, probability: 0.22330005010060225
+2025-05-14 00:57:36,737 - ApiModels - INFO - Heart disease response: {'prediction': 'NEGATIVE', 'probability': 0.22, 'status': 'success', 'request_data': {'age': 65, 'sex': 1, 'cp': 3, 'trestbps': 160, 'chol': 280, 'fbs': 1, 'restecg': 2, 'thalach': 120, 'exang': 1, 'oldpeak': 4, 'slope': 2, 'ca': 3, 'thal': 3}}
+2025-05-14 00:57:36,745 - ApiModels - INFO - Request: POST /api/heart-disease-prediction
+2025-05-14 00:57:36,745 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      65,
+      1,
+      3,
+      160,
+      280,
+      1,
+      2,
+      120,
+      1,
+      4,
+      2,
+      3,
+      3
+    ]
+  ]
+}
+2025-05-14 00:57:36,746 - ApiModels - INFO - Heart disease prediction request: {'data': [[65, 1, 3, 160, 280, 1, 2, 120, 1, 4, 2, 3, 3]]}
+2025-05-14 00:57:36,746 - ApiModels - INFO - Received heart disease data in array format: [65, 1, 3, 160, 280, 1, 2, 120, 1, 4, 2, 3, 3]
+2025-05-14 00:57:36,752 - ApiModels - INFO - Created DataFrame for heart disease prediction:    age  sex  cp  trestbps  chol  fbs  restecg  thalach  exang  oldpeak  slope  ca  thal
+0   65    1   3       160   280    1        2      120      1        4      2   3     3
+2025-05-14 00:57:36,756 - ApiModels - INFO - Heart disease prediction: NEGATIVE, probability: 0.22330005010060225
+2025-05-14 00:57:36,756 - ApiModels - INFO - Heart disease response: {'prediction': 'NEGATIVE', 'probability': 0.22, 'status': 'success', 'request_data': {'age': 65, 'sex': 1, 'cp': 3, 'trestbps': 160, 'chol': 280, 'fbs': 1, 'restecg': 2, 'thalach': 120, 'exang': 1, 'oldpeak': 4, 'slope': 2, 'ca': 3, 'thal': 3}}
+2025-05-14 01:06:15,535 - ApiModels - INFO - Heart disease model loaded successfully
+2025-05-14 01:06:15,567 - ApiModels - INFO - Diabetes model loaded successfully
+2025-05-14 01:06:15,606 - ApiModels - INFO - Symptom checker model loaded successfully
+2025-05-14 01:07:08,556 - ApiModels - INFO - Request: GET /api/symptoms
+2025-05-14 01:07:08,599 - ApiModels - INFO - Available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain', 'acute liver failure', 'restlessness', 'slurred speech', 'blurred and distorted vision', 'vomiting', 'internal itching', 'silver like dusting', 'brittle nails', 'red spots over body', 'blackheads', 'altered sensorium', 'congestion', 'weakness in limbs', 'shivering', 'distention of abdomen']... (total: 131)
+2025-05-14 01:07:28,945 - ApiModels - INFO - Request: GET /api/symptoms
+2025-05-14 01:07:28,946 - ApiModels - INFO - Available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain', 'acute liver failure', 'restlessness', 'slurred speech', 'blurred and distorted vision', 'vomiting', 'internal itching', 'silver like dusting', 'brittle nails', 'red spots over body', 'blackheads', 'altered sensorium', 'congestion', 'weakness in limbs', 'shivering', 'distention of abdomen']... (total: 131)
+2025-05-14 01:07:28,958 - ApiModels - INFO - Request: POST /api/predict
+2025-05-14 01:07:28,958 - ApiModels - INFO - Request body: {"symptoms":["slurred speech","visual disturbances","weakness of one body side","spinning movements"],"top_n":3}
+2025-05-14 01:07:28,961 - ApiModels - INFO - Symptom prediction request: {'symptoms': ['slurred speech', 'visual disturbances', 'weakness of one body side', 'spinning movements'], 'top_n': 3}
+2025-05-14 01:07:28,961 - ApiModels - INFO - Original symptoms: ['slurred speech', 'visual disturbances', 'weakness of one body side', 'spinning movements']
+2025-05-14 01:07:28,961 - ApiModels - INFO - Normalized symptoms: ['slurred_speech', 'visual_disturbances', 'weakness_of_one_body_side', 'spinning_movements']
+2025-05-14 01:07:28,962 - ApiModels - INFO - Sample of available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain']
+2025-05-14 01:07:28,968 - ApiModels - INFO - Symptom prediction response: {'predictions': [{'disease': 'Paralysis (brain hemorrhage)', 'probability': 0.94, 'description': 'Intracerebral hemorrhage (ICH) is when blood suddenly bursts into brain tissue, causing damage to your brain. Symptoms usually appear suddenly during ICH. They include headache, weakness, confusion, and paralysis, particularly on one side of your body.', 'precautions': ['massage', 'eat healthy', 'exercise', 'consult doctor']}, {'disease': 'Allergy', 'probability': 0.02, 'description': "An allergy is an immune system response to a foreign substance that's not typically harmful to your body.They can include certain foods, pollen, or pet dander. Your immune system's job is to keep you healthy by fighting harmful pathogens.", 'precautions': ['apply calamine', 'cover area with bandage', 'use ice to compress itching']}, {'disease': 'Heart attack', 'probability': 0.02, 'description': 'The death of heart muscle due to the loss of blood supply. The loss of blood supply is usually caused by a complete blockage of a coronary artery, one of the arteries that supplies blood to the heart muscle.', 'precautions': ['call ambulance', 'chew or swallow asprin', 'keep calm']}], 'status': 'success', 'request_data': {'symptoms': ['slurred speech', 'visual disturbances', 'weakness of one body side', 'spinning movements'], 'top_n': 3}}
+2025-05-14 01:08:43,109 - ApiModels - INFO - Request: POST /api/heart-disease-prediction
+2025-05-14 01:08:43,110 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      45,
+      0,
+      0,
+      125,
+      180,
+      0,
+      0,
+      170,
+      0,
+      0,
+      0,
+      0,
+      2
+    ]
+  ]
+}
+2025-05-14 01:08:43,111 - ApiModels - INFO - Heart disease prediction request: {'data': [[45, 0, 0, 125, 180, 0, 0, 170, 0, 0, 0, 0, 2]]}
+2025-05-14 01:08:43,111 - ApiModels - INFO - Received heart disease data in array format: [45, 0, 0, 125, 180, 0, 0, 170, 0, 0, 0, 0, 2]
+2025-05-14 01:08:43,121 - ApiModels - INFO - Created DataFrame for heart disease prediction:    age  sex  cp  trestbps  chol  fbs  restecg  thalach  exang  oldpeak  slope  ca  thal
+0   45    0   0       125   180    0        0      170      0        0      0   0     2
+2025-05-14 01:08:43,128 - ApiModels - INFO - Heart disease prediction: POSITIVE, probability: 0.9862181929940239
+2025-05-14 01:08:43,128 - ApiModels - INFO - Heart disease response: {'prediction': 'POSITIVE', 'probability': 0.99, 'status': 'success', 'request_data': {'age': 45, 'sex': 0, 'cp': 0, 'trestbps': 125, 'chol': 180, 'fbs': 0, 'restecg': 0, 'thalach': 170, 'exang': 0, 'oldpeak': 0, 'slope': 0, 'ca': 0, 'thal': 2}}
+2025-05-14 01:09:35,861 - ApiModels - INFO - Request: POST /api/diabetes-prediction
+2025-05-14 01:09:35,862 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      1,
+      30,
+      4.7,
+      46,
+      4.9,
+      180,
+      90,
+      60,
+      100,
+      18,
+      22.5
+    ]
+  ]
+}
+2025-05-14 01:09:35,864 - ApiModels - INFO - Diabetes prediction request: {'data': [[1, 30, 4.7, 46, 4.9, 180, 90, 60, 100, 18, 22.5]]}
+2025-05-14 01:09:35,864 - ApiModels - INFO - Received diabetes data in array format: [1, 30, 4.7, 46, 4.9, 180, 90, 60, 100, 18, 22.5]
+2025-05-14 01:09:35,864 - ApiModels - INFO - Created patient data for diabetes prediction: {'Gender': 1, 'AGE': 30, 'Urea': 4.7, 'Cr': 46, 'HbA1c': 4.9, 'Chol': 180, 'TG': 90, 'HDL': 60, 'LDL': 100, 'VLDL': 18, 'BMI': 22.5}
+2025-05-14 01:09:35,876 - ApiModels - INFO - Diabetes risk assessment complete: {'original_class': 'Y', 'binary_result': 'Positive', 'risk_level': 'Low', 'clinical_status': 'Diabetic', 'probabilities': {'N': np.float64(0.32), 'P': np.float64(0.17), 'Y': np.float64(0.51)}, 'recommendation': 'Medical consultation recommended. Early diabetes management needed.', 'key_indicators': {'HbA1c': 4.9, 'BMI': 22.5}, 'request_data': {'Gender': 1, 'AGE': 30, 'Urea': 4.7, 'Cr': 46, 'HbA1c': 4.9, 'Chol': 180, 'TG': 90, 'HDL': 60, 'LDL': 100, 'VLDL': 18, 'BMI': 22.5}, 'status': 'success'}
+2025-05-14 01:10:19,725 - ApiModels - INFO - Request: POST /api/diabetes-prediction
+2025-05-14 01:10:19,725 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      0,
+      55,
+      5.66,
+      61,
+      7.7,
+      220,
+      180,
+      40,
+      160,
+      36,
+      32.9
+    ]
+  ]
+}
+2025-05-14 01:10:19,726 - ApiModels - INFO - Diabetes prediction request: {'data': [[0, 55, 5.66, 61, 7.7, 220, 180, 40, 160, 36, 32.9]]}
+2025-05-14 01:10:19,727 - ApiModels - INFO - Received diabetes data in array format: [0, 55, 5.66, 61, 7.7, 220, 180, 40, 160, 36, 32.9]
+2025-05-14 01:10:19,727 - ApiModels - INFO - Created patient data for diabetes prediction: {'Gender': 0, 'AGE': 55, 'Urea': 5.66, 'Cr': 61, 'HbA1c': 7.7, 'Chol': 220, 'TG': 180, 'HDL': 40, 'LDL': 160, 'VLDL': 36, 'BMI': 32.9}
+2025-05-14 01:10:19,738 - ApiModels - INFO - Diabetes risk assessment complete: {'original_class': 'Y', 'binary_result': 'Positive', 'risk_level': 'High', 'clinical_status': 'Diabetic', 'probabilities': {'N': np.float64(0.0), 'P': np.float64(0.0), 'Y': np.float64(1.0)}, 'recommendation': 'Immediate medical attention required. Comprehensive diabetes management needed.', 'key_indicators': {'HbA1c': 7.7, 'BMI': 32.9}, 'request_data': {'Gender': 0, 'AGE': 55, 'Urea': 5.66, 'Cr': 61, 'HbA1c': 7.7, 'Chol': 220, 'TG': 180, 'HDL': 40, 'LDL': 160, 'VLDL': 36, 'BMI': 32.9}, 'status': 'success'}
+2025-05-14 09:24:26,022 - ApiModels - INFO - Heart disease model loaded successfully
+2025-05-14 09:24:26,046 - ApiModels - INFO - Diabetes model loaded successfully
+2025-05-14 09:24:26,087 - ApiModels - INFO - Symptom checker model loaded successfully
+2025-05-14 09:25:18,202 - ApiModels - INFO - Request: POST /api/heart-disease-prediction
+2025-05-14 09:25:18,202 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      45,
+      0,
+      0,
+      125,
+      180,
+      0,
+      0,
+      170,
+      0,
+      0,
+      0,
+      0,
+      2
+    ]
+  ]
+}
+2025-05-14 09:25:18,247 - ApiModels - INFO - Heart disease prediction request: {'data': [[45, 0, 0, 125, 180, 0, 0, 170, 0, 0, 0, 0, 2]]}
+2025-05-14 09:25:18,247 - ApiModels - INFO - Received heart disease data in array format: [45, 0, 0, 125, 180, 0, 0, 170, 0, 0, 0, 0, 2]
+2025-05-14 09:25:18,263 - ApiModels - INFO - Created DataFrame for heart disease prediction:    age  sex  cp  trestbps  chol  fbs  restecg  thalach  exang  oldpeak  slope  ca  thal
+0   45    0   0       125   180    0        0      170      0        0      0   0     2
+2025-05-14 09:25:18,276 - ApiModels - INFO - Heart disease prediction: POSITIVE, probability: 0.9862181929940239
+2025-05-14 09:25:18,276 - ApiModels - INFO - Heart disease response: {'prediction': 'POSITIVE', 'probability': 0.99, 'status': 'success', 'request_data': {'age': 45, 'sex': 0, 'cp': 0, 'trestbps': 125, 'chol': 180, 'fbs': 0, 'restecg': 0, 'thalach': 170, 'exang': 0, 'oldpeak': 0, 'slope': 0, 'ca': 0, 'thal': 2}}
+2025-05-14 09:25:30,290 - ApiModels - INFO - Request: GET /api/symptoms
+2025-05-14 09:25:30,292 - ApiModels - INFO - Available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain', 'acute liver failure', 'restlessness', 'slurred speech', 'blurred and distorted vision', 'vomiting', 'internal itching', 'silver like dusting', 'brittle nails', 'red spots over body', 'blackheads', 'altered sensorium', 'congestion', 'weakness in limbs', 'shivering', 'distention of abdomen']... (total: 131)
+2025-05-14 09:25:45,991 - ApiModels - INFO - Request: GET /api/symptoms
+2025-05-14 09:25:45,992 - ApiModels - INFO - Available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain', 'acute liver failure', 'restlessness', 'slurred speech', 'blurred and distorted vision', 'vomiting', 'internal itching', 'silver like dusting', 'brittle nails', 'red spots over body', 'blackheads', 'altered sensorium', 'congestion', 'weakness in limbs', 'shivering', 'distention of abdomen']... (total: 131)
+2025-05-14 09:25:46,001 - ApiModels - INFO - Request: POST /api/predict
+2025-05-14 09:25:46,001 - ApiModels - INFO - Request body: {"symptoms":["prominent veins on calf","fast heart rate","swollen blood vessels","fluid overload"],"top_n":3}
+2025-05-14 09:25:46,006 - ApiModels - INFO - Symptom prediction request: {'symptoms': ['prominent veins on calf', 'fast heart rate', 'swollen blood vessels', 'fluid overload'], 'top_n': 3}
+2025-05-14 09:25:46,006 - ApiModels - INFO - Original symptoms: ['prominent veins on calf', 'fast heart rate', 'swollen blood vessels', 'fluid overload']
+2025-05-14 09:25:46,007 - ApiModels - INFO - Normalized symptoms: ['prominent_veins_on_calf', 'fast_heart_rate', 'swollen_blood_vessels', 'fluid_overload']
+2025-05-14 09:25:46,007 - ApiModels - INFO - Sample of available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain']
+2025-05-14 09:25:46,030 - ApiModels - INFO - Symptom prediction response: {'predictions': [{'disease': 'Varicose veins', 'probability': 0.37, 'description': 'A vein that has enlarged and twisted, often appearing as a bulging, blue blood vessel that is clearly visible through the skin. Varicose veins are most common in older adults, particularly women, and occur especially on the legs.', 'precautions': ['lie down flat and raise the leg high', 'use oinments', 'use vein compression', 'dont stand still for long']}, {'disease': 'Paralysis (brain hemorrhage)', 'probability': 0.14, 'description': 'Intracerebral hemorrhage (ICH) is when blood suddenly bursts into brain tissue, causing damage to your brain. Symptoms usually appear suddenly during ICH. They include headache, weakness, confusion, and paralysis, particularly on one side of your body.', 'precautions': ['massage', 'eat healthy', 'exercise', 'consult doctor']}, {'disease': 'Gastroenteritis', 'probability': 0.14, 'description': 'Gastroenteritis is an inflammation of the digestive tract, particularly the stomach, and large and small intestines. Viral and bacterial gastroenteritis are intestinal infections associated with symptoms of diarrhea , abdominal cramps, nausea , and vomiting .', 'precautions': ['stop eating solid food for while', 'try taking small sips of water', 'rest', 'ease back into eating']}], 'status': 'success', 'request_data': {'symptoms': ['prominent veins on calf', 'fast heart rate', 'swollen blood vessels', 'fluid overload'], 'top_n': 3}}
+2025-05-14 09:50:27,010 - ApiModels - INFO - Heart disease model loaded successfully
+2025-05-14 09:50:27,031 - ApiModels - INFO - Diabetes model loaded successfully
+2025-05-14 09:50:27,060 - ApiModels - INFO - Symptom checker model loaded successfully
+2025-05-14 09:51:17,802 - ApiModels - INFO - Request: GET /api/symptoms
+2025-05-14 09:51:17,842 - ApiModels - INFO - Available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain', 'acute liver failure', 'restlessness', 'slurred speech', 'blurred and distorted vision', 'vomiting', 'internal itching', 'silver like dusting', 'brittle nails', 'red spots over body', 'blackheads', 'altered sensorium', 'congestion', 'weakness in limbs', 'shivering', 'distention of abdomen']... (total: 131)
+2025-05-14 09:51:17,869 - ApiModels - INFO - Request: POST /api/predict
+2025-05-14 09:51:17,870 - ApiModels - INFO - Request body: {"symptoms":["distention of abdomen","loss of appetite","pain in anal region","stomach pain"],"top_n":3}
+2025-05-14 09:51:17,872 - ApiModels - INFO - Symptom prediction request: {'symptoms': ['distention of abdomen', 'loss of appetite', 'pain in anal region', 'stomach pain'], 'top_n': 3}
+2025-05-14 09:51:17,872 - ApiModels - INFO - Original symptoms: ['distention of abdomen', 'loss of appetite', 'pain in anal region', 'stomach pain']
+2025-05-14 09:51:17,873 - ApiModels - INFO - Normalized symptoms: ['distention_of_abdomen', 'loss_of_appetite', 'pain_in_anal_region', 'stomach_pain']
+2025-05-14 09:51:17,873 - ApiModels - INFO - Sample of available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain']
+2025-05-14 09:51:17,895 - ApiModels - INFO - Symptom prediction response: {'predictions': [{'disease': 'Drug Reaction', 'probability': 0.77, 'description': 'An adverse drug reaction (ADR) is an injury caused by taking medication. ADRs may occur following a single dose or prolonged administration of a drug or result from the combination of two or more drugs.', 'precautions': ['stop irritation', 'consult nearest hospital', 'stop taking drug', 'follow up']}, {'disease': 'Acne', 'probability': 0.05, 'description': 'Acne vulgaris is the formation of comedones, papules, pustules, nodules, and/or cysts as a result of obstruction and inflammation of pilosebaceous units (hair follicles and their accompanying sebaceous gland). Acne develops on the face and upper trunk. It most often affects adolescents.', 'precautions': ['bath twice', 'avoid fatty spicy food', 'drink plenty of water', 'avoid too many products']}, {'disease': 'Urinary tract infection', 'probability': 0.03, 'description': 'Urinary tract infection: An infection of the kidney, ureter, bladder, or urethra. Abbreviated UTI. Not everyone with a UTI has symptoms, but common symptoms include a frequent urge to urinate and pain or burning when urinating.', 'precautions': ['drink plenty of water', 'increase vitamin c intake', 'drink cranberry juice', 'take probiotics']}], 'status': 'success', 'request_data': {'symptoms': ['distention of abdomen', 'loss of appetite', 'pain in anal region', 'stomach pain'], 'top_n': 3}}
+2025-05-14 09:51:35,679 - ApiModels - INFO - Request: POST /api/heart-disease-prediction
+2025-05-14 09:51:35,679 - ApiModels - INFO - Request body: {
+  "data": [
+    [
+      55,
+      1,
+      1,
+      140,
+      230,
+      1,
+      1,
+      150,
+      0,
+      1.5,
+      1,
+      1,
+      2
+    ]
+  ]
+}
+2025-05-14 09:51:35,680 - ApiModels - INFO - Heart disease prediction request: {'data': [[55, 1, 1, 140, 230, 1, 1, 150, 0, 1.5, 1, 1, 2]]}
+2025-05-14 09:51:35,681 - ApiModels - INFO - Received heart disease data in array format: [55, 1, 1, 140, 230, 1, 1, 150, 0, 1.5, 1, 1, 2]
+2025-05-14 09:51:35,699 - ApiModels - INFO - Created DataFrame for heart disease prediction:    age  sex  cp  trestbps  chol  fbs  restecg  thalach  exang  oldpeak  slope  ca  thal
+0   55    1   1       140   230    1        1      150      0      1.5      1   1     2
+2025-05-14 09:51:35,708 - ApiModels - INFO - Heart disease prediction: NEGATIVE, probability: 0.3784260232358533
+2025-05-14 09:51:35,709 - ApiModels - INFO - Heart disease response: {'prediction': 'NEGATIVE', 'probability': 0.38, 'status': 'success', 'request_data': {'age': 55, 'sex': 1, 'cp': 1, 'trestbps': 140, 'chol': 230, 'fbs': 1, 'restecg': 1, 'thalach': 150, 'exang': 0, 'oldpeak': 1.5, 'slope': 1, 'ca': 1, 'thal': 2}}
+2025-05-14 09:56:13,360 - ApiModels - INFO - Request: GET /api/symptoms
+2025-05-14 09:56:13,361 - ApiModels - INFO - Available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain', 'acute liver failure', 'restlessness', 'slurred speech', 'blurred and distorted vision', 'vomiting', 'internal itching', 'silver like dusting', 'brittle nails', 'red spots over body', 'blackheads', 'altered sensorium', 'congestion', 'weakness in limbs', 'shivering', 'distention of abdomen']... (total: 131)
+2025-05-14 10:04:28,311 - ApiModels - INFO - Request: GET /api/symptoms
+2025-05-14 10:04:28,312 - ApiModels - INFO - Available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain', 'acute liver failure', 'restlessness', 'slurred speech', 'blurred and distorted vision', 'vomiting', 'internal itching', 'silver like dusting', 'brittle nails', 'red spots over body', 'blackheads', 'altered sensorium', 'congestion', 'weakness in limbs', 'shivering', 'distention of abdomen']... (total: 131)
+2025-05-14 10:47:49,925 - ApiModels - INFO - Request: GET /api/symptoms
+2025-05-14 10:47:49,927 - ApiModels - INFO - Available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain', 'acute liver failure', 'restlessness', 'slurred speech', 'blurred and distorted vision', 'vomiting', 'internal itching', 'silver like dusting', 'brittle nails', 'red spots over body', 'blackheads', 'altered sensorium', 'congestion', 'weakness in limbs', 'shivering', 'distention of abdomen']... (total: 131)
+2025-05-14 10:48:32,241 - ApiModels - INFO - Request: GET /api/symptoms
+2025-05-14 10:48:32,243 - ApiModels - INFO - Available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain', 'acute liver failure', 'restlessness', 'slurred speech', 'blurred and distorted vision', 'vomiting', 'internal itching', 'silver like dusting', 'brittle nails', 'red spots over body', 'blackheads', 'altered sensorium', 'congestion', 'weakness in limbs', 'shivering', 'distention of abdomen']... (total: 131)
+2025-05-14 10:48:32,254 - ApiModels - INFO - Request: POST /api/predict
+2025-05-14 10:48:32,255 - ApiModels - INFO - Request body: {"symptoms":["swelling joints","painful walking","spinning movements","weakness in limbs"],"top_n":3}
+2025-05-14 10:48:32,260 - ApiModels - INFO - Symptom prediction request: {'symptoms': ['swelling joints', 'painful walking', 'spinning movements', 'weakness in limbs'], 'top_n': 3}
+2025-05-14 10:48:32,260 - ApiModels - INFO - Original symptoms: ['swelling joints', 'painful walking', 'spinning movements', 'weakness in limbs']
+2025-05-14 10:48:32,260 - ApiModels - INFO - Normalized symptoms: ['swelling_joints', 'painful_walking', 'spinning_movements', 'weakness_in_limbs']
+2025-05-14 10:48:32,261 - ApiModels - INFO - Sample of available symptoms: ['hip joint pain', 'yellowish skin', 'dizziness', 'small dents in nails', 'belly pain']
+2025-05-14 10:48:32,284 - ApiModels - INFO - Symptom prediction response: {'predictions': [{'disease': 'Arthritis', 'probability': 0.93, 'description': 'Arthritis is the swelling and tenderness of one or more of your joints. The main symptoms of arthritis are joint pain and stiffness, which typically worsen with age. The most common types of arthritis are osteoarthritis and rheumatoid arthritis.', 'precautions': ['exercise', 'use hot and cold therapy', 'try acupuncture', 'massage']}, {'disease': 'Osteoarthristis', 'probability': 0.06, 'description': 'Osteoarthritis is the most common form of arthritis, affecting millions of people worldwide. It occurs when the protective cartilage that cushions the ends of your bones wears down over time.', 'precautions': ['acetaminophen', 'consult nearest hospital', 'follow up', 'salt baths']}, {'disease': 'Cervical spondylosis', 'probability': 0.01, 'description': 'Cervical spondylosis is a general term for age-related wear and tear affecting the spinal disks in your neck. As the disks dehydrate and shrink, signs of osteoarthritis develop, including bony projections along the edges of bones (bone spurs).', 'precautions': ['use heating pad or cold pack', 'exercise', 'take otc pain reliver', 'consult doctor']}], 'status': 'success', 'request_data': {'symptoms': ['swelling joints', 'painful walking', 'spinning movements', 'weakness in limbs'], 'top_n': 3}}
