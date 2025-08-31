@@ -1,0 +1,78 @@
+/* Detection Hub Styles */
+.detection-hub-section {
+    padding: 40px 0;
+}
+
+.icon-container {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hover-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .hover-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    }
+
+/* Form Styles */
+.form-section {
+    transition: all 0.3s ease;
+}
+
+.progress-indicator {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+/* BMI Calculator Styles */
+.bmi-calculator {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* Results Page Styles */
+.result-card {
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.prediction-badge {
+    display: inline-block;
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border-radius: 30px;
+    margin-bottom: 15px;
+}
+
+.patient-data-section .card {
+    transition: transform 0.2s ease;
+}
+
+    .patient-data-section .card:hover {
+        transform: translateY(-5px);
+    }
+
+/* Toast Notifications */
+.toast-container {
+    z-index: 1050;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .btn-group {
+        flex-direction: column;
+    }
+
+        .btn-group .btn {
+            margin-bottom: 5px;
+            border-radius: 4px !important;
+        }
+}

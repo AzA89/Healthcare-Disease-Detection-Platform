@@ -1,0 +1,206 @@
+@model NewProject.Models.HeartDiseaseResponse
+
+@{
+    ViewData["Title"] = "Heart Disease Detection Results";
+}
+
+<section class="disease-result-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="text-center mb-0">Heart Disease Detection Results</h2>
+                    </div>
+                    <div class="card-body p-4">
+                        <!-- Prediction Result Card -->
+                        <div class="result-card text-center p-4 mb-4 rounded @(Model.Prediction == "POSITIVE" ? "bg-danger-subtle" : "bg-success-subtle")">
+                            <h3 class="mb-3">Heart Disease Risk Assessment</h3>
+                            <div class="prediction-result mb-4">
+                                <div class="prediction-badge @(Model.Prediction == "POSITIVE" ? "badge bg-danger" : "badge bg-success") p-3 fs-4 mb-3">
+                                    @(Model.Prediction == "POSITIVE" ? "POSITIVE" : "NEGATIVE")
+                                </div>
+                                <p class="lead mb-2">Probability: <strong>@(Model.Probability.ToString("P2"))</strong></p>
+                                
+                                <!-- Probability Bar -->
+                                <div class="progress mb-3" style="height: 25px;">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated @(Model.Prediction == "POSITIVE" ? "bg-danger" : "bg-success")" 
+                                         role="progressbar" 
+                                         style="width: @(Model.Probability * 100)%;" 
+                                         aria-valuenow="@(Model.Probability * 100)" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100">
+                                        @(Model.Probability.ToString("P0"))
+                                    </div>
+                                </div>
+                                
+                                <div class="alert @(Model.Prediction == "POSITIVE" ? "alert-danger" : "alert-success") mt-3">
+                                    @Model.Message
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Patient Data Summary -->
+                        <div class="patient-data-section mb-4">
+                            <h4 class="border-bottom pb-2 mb-3">Patient Data</h4>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-header bg-light">Demographics</div>
+                                        <div class="card-body">
+                                            <p><strong>Age:</strong> @ViewBag.PatientData.Age years</p>
+                                            <p><strong>Gender:</strong> @(ViewBag.PatientData.Sex == 0 ? "Female" : "Male")</p>
+                                            <p><strong>Chest Pain Type:</strong> @GetChestPainType(ViewBag.PatientData.Cp)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-header bg-light">Vitals & Lab Results</div>
+                                        <div class="card-body">
+                                            <p><strong>Blood Pressure:</strong> @ViewBag.PatientData.Trestbps mmHg 
+                                                <span class="badge @GetBadgeColorForStatus(ViewBag.BPStatus)">@ViewBag.BPStatus</span>
+                                            </p>
+                                            <p><strong>Cholesterol:</strong> @ViewBag.PatientData.Chol mg/dl 
+                                                <span class="badge @GetBadgeColorForStatus(ViewBag.CholesterolStatus)">@ViewBag.CholesterolStatus</span>
+                                            </p>
+                                            <p><strong>Fasting Blood Sugar:</strong> @(ViewBag.PatientData.Fbs == 1 ? "> 120 mg/dl" : "≤ 120 mg/dl")</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-header bg-light">Cardiac Function</div>
+                                        <div class="card-body">
+                                            <p><strong>Resting ECG:</strong> @GetRestingECG(ViewBag.PatientData.Restecg)</p>
+                                            <p><strong>Max Heart Rate:</strong> @ViewBag.PatientData.Thalach 
+                                                <span class="badge @GetBadgeColorForStatus(ViewBag.HeartRateStatus)">@ViewBag.HeartRateStatus</span>
+                                            </p>
+                                            <p><strong>Exercise Angina:</strong> @(ViewBag.PatientData.Exang == 1 ? "Yes" : "No")</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-header bg-light">Exercise Test Results</div>
+                                        <div class="card-body">
+                                            <p><strong>ST Depression:</strong> @ViewBag.PatientData.Oldpeak mm</p>
+                                            <p><strong>ST Slope:</strong> @GetSlopeType(ViewBag.PatientData.Slope)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-header bg-light">Imaging Results</div>
+                                        <div class="card-body">
+                                            <p><strong>Major Vessels:</strong> @ViewBag.PatientData.Ca (colored by fluoroscopy)</p>
+                                            <p><strong>Thalassemia Status:</strong> @GetThalassemiaType(ViewBag.PatientData.Thal)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recommendations Section -->
+                        <div class="recommendations-section mb-4">
+                            <h4 class="border-bottom pb-2 mb-3">Recommendations</h4>
+                            <div class="p-3 bg-light rounded shadow-sm">
+                                @if (Model.Prediction == "POSITIVE")
+                                {
+                                    <ul class="mb-0">
+                                        <li>Schedule an appointment with a cardiologist to discuss these results.</li>
+                                        <li>Follow a heart-healthy diet low in saturated fats and sodium.</li>
+                                        <li>Engage in regular physical activity as recommended by your doctor.</li>
+                                        <li>Monitor your blood pressure and cholesterol regularly.</li>
+                                        <li>Take any prescribed medications as directed.</li>
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <ul class="mb-0">
+                                        <li>Continue regular check-ups with your healthcare provider.</li>
+                                        <li>Maintain a heart-healthy lifestyle with regular exercise and balanced diet.</li>
+                                        <li>Monitor your blood pressure and cholesterol periodically.</li>
+                                        <li>Be aware of heart disease symptoms and seek medical attention if they develop.</li>
+                                    </ul>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
+                            <a href="@Url.Action("Index", "HeartDisease")" class="btn btn-primary me-md-2">
+                                <i class="fas fa-redo me-2"></i>New Prediction
+                            </a>
+                            <a href="@Url.Action("Index", "Detection")" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Disease Detection Hub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@functions {
+    public string GetChestPainType(int cp)
+    {
+        return cp switch
+        {
+            0 => "Typical Angina",
+            1 => "Atypical Angina",
+            2 => "Non-anginal Pain",
+            3 => "Asymptomatic",
+            _ => "Unknown"
+        };
+    }
+
+    public string GetRestingECG(int restecg)
+    {
+        return restecg switch
+        {
+            0 => "Normal",
+            1 => "ST-T Wave Abnormality",
+            2 => "Left Ventricular Hypertrophy",
+            _ => "Unknown"
+        };
+    }
+
+    public string GetSlopeType(int slope)
+    {
+        return slope switch
+        {
+            0 => "Upsloping",
+            1 => "Flat",
+            2 => "Downsloping",
+            _ => "Unknown"
+        };
+    }
+
+    public string GetThalassemiaType(int thal)
+    {
+        return thal switch
+        {
+            1 => "Fixed Defect",
+            2 => "Normal",
+            3 => "Reversible Defect",
+            _ => "Unknown"
+        };
+    }
+    
+    public string GetBadgeColorForStatus(string status)
+    {
+        return status?.ToLower() switch
+        {
+            var s when s.Contains("normal") => "bg-success",
+            var s when s.Contains("desirable") => "bg-success",
+            var s when s.Contains("elevated") || s.Contains("borderline") => "bg-warning",
+            var s when s.Contains("high") || s.Contains("hypertension") => "bg-danger",
+            var s when s.Contains("low") => "bg-info",
+            _ => "bg-secondary"
+        };
+    }
+} 

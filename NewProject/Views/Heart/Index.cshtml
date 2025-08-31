@@ -1,0 +1,513 @@
+@model NewProject.Models.HeartDiseaseRequest
+
+@{
+    ViewData["Title"] = "Heart Disease Detection";
+}
+
+<section class="disease-detection-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-dark text-white p-4">
+                        <div class="d-flex align-items-center">
+                            <div class="me-3">
+                                <i class="fas fa-heartbeat fa-3x"></i>
+                            </div>
+                            <div>
+                                <h2 class="mb-0">Heart Disease Risk Assessment</h2>
+                                <p class="mb-0 mt-1 opacity-75">Predict your risk with AI-powered analysis</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger rounded-3">
+                                <div class="d-flex">
+                                    <div class="me-3">
+                                        <i class="fas fa-exclamation-triangle fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">Please fix the following errors:</h5>
+                                        <div asp-validation-summary="All" class="text-danger"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="p-4">
+                            <p class="lead mb-4">Our AI model analyzes various health parameters including blood pressure, cholesterol levels, and other vital data to predict your risk of heart disease.</p>
+
+                            <!-- Test Cases Section -->
+                            <div class="bg-light p-4 rounded-3 mb-4 border border-1 border-dark">
+                                <h5 class="mb-3 d-flex align-items-center">
+                                    <i class="fas fa-vial text-dark me-2"></i>
+                                    Quick Test Cases
+                                </h5>
+                                <p class="text-muted mb-3">Try these pre-filled examples to see how the system works:</p>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <button type="button" class="btn btn-outline-success" onclick="loadTestCase(1)">
+                                        <i class="fas fa-heart me-1"></i> Low Risk Example
+                                    </button>
+                                    <button type="button" class="btn btn-outline-warning" onclick="loadTestCase(2)">
+                                        <i class="fas fa-heart-broken me-1"></i> Medium Risk Example
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger" onclick="loadTestCase(3)">
+                                        <i class="fas fa-heartbeat me-1"></i> High Risk Example
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Heart Disease Form -->
+                        <form asp-controller="HeartDisease" asp-action="Predict" method="post" id="heartDiseaseForm" class="needs-validation" novalidate>
+                            <!-- Progress Indicator -->
+                            <div class="progress-indicator mb-4">
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-dark" role="progressbar" style="width: 0%;" id="formProgress"></div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <small class="text-dark fw-medium">
+                                        <i class="fas fa-user-circle"></i> Basic Info
+                                    </small>
+                                    <small>
+                                        <i class="fas fa-flask"></i> Clinical Data
+                                    </small>
+                                    <small>
+                                        <i class="fas fa-chart-line"></i> Test Results
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Form Sections -->
+                            <div class="form-sections">
+                                <!-- Section 1: Basic Information -->
+                                <div class="form-section" id="section1">
+                                    <h4 class="mb-3 border-bottom pb-2 d-flex align-items-center">
+                                        <i class="fas fa-user-circle text-dark me-2"></i>
+                                        Basic Information
+                                    </h4>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="Age" class="form-label">Age</label>
+                                            <div class="input-group">
+                                                <input asp-for="Age" class="form-control" min="25" max="90" required />
+                                                <span class="input-group-text">years</span>
+                                            </div>
+                                            <small class="form-text text-muted">Age must be between 25 and 90</small>
+                                            <span asp-validation-for="Age" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="Sex" class="form-label">Sex</label>
+                                            <select asp-for="Sex" class="form-select" required>
+                                                <option value="">Select Gender</option>
+                                                <option value="0">Female</option>
+                                                <option value="1">Male</option>
+                                            </select>
+                                            <span asp-validation-for="Sex" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="Cp" class="form-label">Chest Pain Type</label>
+                                            <select asp-for="Cp" class="form-select" required>
+                                                <option value="">Select Chest Pain Type</option>
+                                                <option value="0">Typical Angina</option>
+                                                <option value="1">Atypical Angina</option>
+                                                <option value="2">Non-anginal Pain</option>
+                                                <option value="3">Asymptomatic</option>
+                                            </select>
+                                            <div class="form-text">
+                                                <a href="#" data-bs-toggle="tooltip" title="Typical Angina: Chest pain caused by reduced blood flow to the heart. Atypical Angina: Chest pain not typical of angina. Non-anginal Pain: Chest pain not related to heart. Asymptomatic: No chest pain.">
+                                                    <i class="fas fa-info-circle"></i> What do these mean?
+                                                </a>
+                                            </div>
+                                            <span asp-validation-for="Cp" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="Trestbps" class="form-label">Resting Blood Pressure</label>
+                                            <div class="input-group">
+                                                <input asp-for="Trestbps" class="form-control" min="90" max="200" required />
+                                                <span class="input-group-text">mm Hg</span>
+                                            </div>
+                                            <small class="form-text text-muted">Range: 90-200 mm Hg</small>
+                                            <span asp-validation-for="Trestbps" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-end mt-4">
+                                        <button type="button" class="btn btn-dark" onclick="nextSection(1)">
+                                            Next <i class="fas fa-arrow-right ms-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Section 2: Clinical Data -->
+                                <div class="form-section d-none" id="section2">
+                                    <h4 class="mb-3 border-bottom pb-2 d-flex align-items-center">
+                                        <i class="fas fa-flask text-dark me-2"></i>
+                                        Clinical Data
+                                    </h4>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="Chol" class="form-label">Cholesterol</label>
+                                            <div class="input-group">
+                                                <input asp-for="Chol" class="form-control" min="120" max="570" required />
+                                                <span class="input-group-text">mg/dl</span>
+                                            </div>
+                                            <small class="form-text text-muted">Range: 120-570 mg/dl</small>
+                                            <span asp-validation-for="Chol" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="Fbs" class="form-label">Fasting Blood Sugar > 120 mg/dl</label>
+                                            <select asp-for="Fbs" class="form-select" required>
+                                                <option value="">Select Option</option>
+                                                <option value="0">No</option>
+                                                <option value="1">Yes</option>
+                                            </select>
+                                            <span asp-validation-for="Fbs" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="Restecg" class="form-label">Resting ECG Results</label>
+                                            <select asp-for="Restecg" class="form-select" required>
+                                                <option value="">Select Option</option>
+                                                <option value="0">Normal</option>
+                                                <option value="1">ST-T Wave Abnormality</option>
+                                                <option value="2">Left Ventricular Hypertrophy</option>
+                                            </select>
+                                            <div class="form-text">
+                                                <a href="#" data-bs-toggle="tooltip" title="Normal: No abnormalities. ST-T Wave Abnormality: Changes in the ST segment and T wave. Left Ventricular Hypertrophy: Enlarged left ventricle.">
+                                                    <i class="fas fa-info-circle"></i> What do these mean?
+                                                </a>
+                                            </div>
+                                            <span asp-validation-for="Restecg" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="Thalach" class="form-label">Maximum Heart Rate</label>
+                                            <div class="input-group">
+                                                <input asp-for="Thalach" class="form-control" min="60" max="220" required />
+                                                <span class="input-group-text">bpm</span>
+                                            </div>
+                                            <small class="form-text text-muted">Range: 60-220 beats per minute</small>
+                                            <span asp-validation-for="Thalach" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between mt-4">
+                                        <button type="button" class="btn btn-outline-secondary" onclick="prevSection(2)">
+                                            <i class="fas fa-arrow-left me-1"></i> Previous
+                                        </button>
+                                        <button type="button" class="btn btn-dark" onclick="nextSection(2)">
+                                            Next <i class="fas fa-arrow-right ms-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Section 3: Test Results -->
+                                <div class="form-section d-none" id="section3">
+                                    <h4 class="mb-3 border-bottom pb-2 d-flex align-items-center">
+                                        <i class="fas fa-chart-line text-dark me-2"></i>
+                                        Test Results
+                                    </h4>
+                                    <div class="row mb-4">
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="Exang" class="form-label">Exercise Induced Angina</label>
+                                            <select asp-for="Exang" class="form-select" required>
+                                                <option value="">Select Option</option>
+                                                <option value="0">No</option>
+                                                <option value="1">Yes</option>
+                                            </select>
+                                            <small class="form-text text-muted">Chest pain during exercise</small>
+                                            <span asp-validation-for="Exang" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="Oldpeak" class="form-label">ST Depression</label>
+                                            <div class="input-group">
+                                                <input asp-for="Oldpeak" class="form-control" min="0" max="6.0" step="0.1" required />
+                                                <span class="input-group-text">mm</span>
+                                            </div>
+                                            <small class="form-text text-muted">ST depression induced by exercise (Range: 0.0-6.0)</small>
+                                            <span asp-validation-for="Oldpeak" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-4 mb-3">
+                                            <label asp-for="Slope" class="form-label">Slope of Peak Exercise ST Segment</label>
+                                            <select asp-for="Slope" class="form-select" required>
+                                                <option value="">Select Option</option>
+                                                <option value="0">Upsloping</option>
+                                                <option value="1">Flat</option>
+                                                <option value="2">Downsloping</option>
+                                            </select>
+                                            <span asp-validation-for="Slope" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label asp-for="Ca" class="form-label">Number of Major Vessels</label>
+                                            <select asp-for="Ca" class="form-select" required>
+                                                <option value="">Select Option</option>
+                                                <option value="0">0</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                            </select>
+                                            <small class="form-text text-muted">Number of major vessels colored by fluoroscopy (0-3)</small>
+                                            <span asp-validation-for="Ca" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label asp-for="Thal" class="form-label">Thalassemia</label>
+                                            <select asp-for="Thal" class="form-select" required>
+                                                <option value="">Select Option</option>
+                                                <option value="1">Fixed Defect</option>
+                                                <option value="2">Normal</option>
+                                                <option value="3">Reversible Defect</option>
+                                            </select>
+                                            <div class="form-text">
+                                                <a href="#" data-bs-toggle="tooltip" title="Fixed Defect: Permanent defect. Normal: No defect. Reversible Defect: Temporary defect.">
+                                                    <i class="fas fa-info-circle"></i> What do these mean?
+                                                </a>
+                                            </div>
+                                            <span asp-validation-for="Thal" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between mt-4">
+                                        <button type="button" class="btn btn-outline-secondary" onclick="prevSection(3)">
+                                            <i class="fas fa-arrow-left me-1"></i> Previous
+                                        </button>
+                                        <button type="submit" class="btn btn-success btn-lg px-4">
+                                            <i class="fas fa-heart me-2"></i> Predict Heart Disease Risk
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Disclaimer notice -->
+                        <div class="mt-4 p-3 bg-light rounded-3 border-start border-warning border-4">
+                            <div class="d-flex">
+                                <div class="me-3 text-warning">
+                                    <i class="fas fa-exclamation-circle fa-2x"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Medical Disclaimer</h6>
+                                    <p class="mb-0 small">This tool is for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Back button -->
+                        <div class="text-center mt-4">
+                            <a href="@Url.Action("Index", "Detection")" class="btn btn-outline-dark">
+                                <i class="fas fa-arrow-left me-2"></i> Back to Disease Detection Hub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+
+        // Form navigation functions
+        function nextSection(currentSection) {
+            // Validate current section
+            const currentSectionElement = document.getElementById(`section${currentSection}`);
+            const inputs = currentSectionElement.querySelectorAll('input, select');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (input.hasAttribute('required') && !input.value) {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+
+            if (!isValid) {
+                showToast('Please fill in all required fields before proceeding.', 'danger');
+                return;
+            }
+
+            // Hide current section and show next section
+            document.getElementById(`section${currentSection}`).classList.add('d-none');
+            document.getElementById(`section${currentSection + 1}`).classList.remove('d-none');
+
+            // Update progress bar
+            updateProgress(currentSection + 1);
+        }
+
+        function prevSection(currentSection) {
+            // Hide current section and show previous section
+            document.getElementById(`section${currentSection}`).classList.add('d-none');
+            document.getElementById(`section${currentSection - 1}`).classList.remove('d-none');
+
+            // Update progress bar
+            updateProgress(currentSection - 1);
+        }
+
+        function updateProgress(section) {
+            const progressBar = document.getElementById('formProgress');
+            const totalSections = 3;
+            const progressPercentage = ((section - 1) / (totalSections - 1)) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+
+            // Update active step
+            const steps = document.querySelectorAll('.progress-indicator .d-flex small');
+            steps.forEach((step, index) => {
+                if (index + 1 === section) {
+                    step.classList.add('text-dark', 'fw-medium');
+                } else if (index + 1 < section) {
+                    step.classList.add('text-success');
+                    step.classList.remove('text-dark', 'fw-medium');
+                } else {
+                    step.classList.remove('text-dark', 'text-success', 'fw-medium');
+                }
+            });
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'danger') {
+            // Create toast container if it doesn't exist
+            let toastContainer = document.getElementById('toastContainer');
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.id = 'toastContainer';
+                toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+                document.body.appendChild(toastContainer);
+            }
+
+            // Create toast
+            const toastId = `toast-${Date.now()}`;
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.id = toastId;
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+
+            const bgColor = type === 'danger' ? 'bg-danger' : type === 'success' ? 'bg-success' : 'bg-primary';
+            const icon = type === 'danger' ? 'fa-exclamation-circle' : type === 'success' ? 'fa-check-circle' : 'fa-info-circle';
+            const title = type === 'danger' ? 'Validation Error' : type === 'success' ? 'Success' : 'Information';
+
+            toast.innerHTML = `
+                <div class="toast-header ${bgColor} text-white">
+                    <i class="fas ${icon} me-2"></i>
+                    <strong class="me-auto">${title}</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    ${message}
+                </div>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            // Show toast
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+
+            // Remove toast after it's hidden
+            toast.addEventListener('hidden.bs.toast', function () {
+                toast.remove();
+            });
+        }
+
+        // Test case loading function
+        function loadTestCase(caseNumber) {
+            switch(caseNumber) {
+                case 1: // Low Risk/Negative Case
+                    document.querySelector('[name="Age"]').value = "45";
+                    document.querySelector('[name="Sex"]').value = "0";
+                    document.querySelector('[name="Cp"]').value = "0";
+                    document.querySelector('[name="Trestbps"]').value = "125";
+                    document.querySelector('[name="Chol"]').value = "180";
+                    document.querySelector('[name="Fbs"]').value = "0";
+                    document.querySelector('[name="Restecg"]').value = "0";
+                    document.querySelector('[name="Thalach"]').value = "170";
+                    document.querySelector('[name="Exang"]').value = "0";
+                    document.querySelector('[name="Oldpeak"]').value = "0.0";
+                    document.querySelector('[name="Slope"]').value = "0";
+                    document.querySelector('[name="Ca"]').value = "0";
+                    document.querySelector('[name="Thal"]').value = "2";
+                    break;
+
+                case 2: // Medium Risk Case
+                    document.querySelector('[name="Age"]').value = "55";
+                    document.querySelector('[name="Sex"]').value = "1";
+                    document.querySelector('[name="Cp"]').value = "1";
+                    document.querySelector('[name="Trestbps"]').value = "140";
+                    document.querySelector('[name="Chol"]').value = "230";
+                    document.querySelector('[name="Fbs"]').value = "1";
+                    document.querySelector('[name="Restecg"]').value = "1";
+                    document.querySelector('[name="Thalach"]').value = "150";
+                    document.querySelector('[name="Exang"]').value = "0";
+                    document.querySelector('[name="Oldpeak"]').value = "1.5";
+                    document.querySelector('[name="Slope"]').value = "1";
+                    document.querySelector('[name="Ca"]').value = "1";
+                    document.querySelector('[name="Thal"]').value = "2";
+                    break;
+
+                case 3: // High Risk/Positive Case
+                    document.querySelector('[name="Age"]').value = "65";
+                    document.querySelector('[name="Sex"]').value = "1";
+                    document.querySelector('[name="Cp"]').value = "3";
+                    document.querySelector('[name="Trestbps"]').value = "160";
+                    document.querySelector('[name="Chol"]').value = "280";
+                    document.querySelector('[name="Fbs"]').value = "1";
+                    document.querySelector('[name="Restecg"]').value = "2";
+                    document.querySelector('[name="Thalach"]').value = "120";
+                    document.querySelector('[name="Exang"]').value = "1";
+                    document.querySelector('[name="Oldpeak"]').value = "4.0";
+                    document.querySelector('[name="Slope"]').value = "2";
+                    document.querySelector('[name="Ca"]').value = "3";
+                    document.querySelector('[name="Thal"]').value = "3";
+                    break;
+            }
+
+            // Show success message
+            showToast('Test case loaded successfully. Please navigate through the form to review all data.', 'success');
+
+            // Reset to first section
+            document.getElementById('section1').classList.remove('d-none');
+            document.getElementById('section2').classList.add('d-none');
+            document.getElementById('section3').classList.add('d-none');
+            updateProgress(1);
+        }
+    </script>
+
+    <style>
+        .form-section {
+            transition: all 0.3s ease;
+        }
+
+        .progress-indicator {
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        .toast-container {
+            z-index: 1060;
+        }
+
+        .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.25);
+        }
+    </style>
+}

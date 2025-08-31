@@ -1,0 +1,141 @@
+@model NewProject.Models.DetectionViewModel
+
+@{
+    ViewData["Title"] = "Disease Detection Hub";
+}
+
+<section class="detection-hub-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-lg border-0">
+                    <div class="card-body p-4">
+                        <!-- Error Message (if any) -->
+                        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                        {
+                            <div class="alert alert-danger mb-4">
+                                <i class="fas fa-exclamation-circle me-2"></i>
+                                @Model.ErrorMessage
+                                @if (!string.IsNullOrEmpty(Model.ApiErrorDetails))
+                                {
+                                    <button class="btn btn-sm btn-outline-danger float-end" type="button" data-bs-toggle="collapse" data-bs-target="#errorDetails">
+                                        Show Details
+                                    </button>
+                                    <div class="collapse mt-3" id="errorDetails">
+                                        <div class="bg-light p-2 rounded">
+                                            <pre class="mb-0 small">@Model.ApiErrorDetails</pre>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        
+                        <div class="text-center mb-5">
+                            <h1 class="display-4 mb-3">Disease Detection Hub</h1>
+                            <p class="lead">Select a detection tool to predict disease risk based on health parameters.</p>
+                        </div>
+                        
+                        <!-- Disease Detection Options -->
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="card h-100 shadow-sm hover-card">
+                                    <div class="card-body text-center p-4">
+                                        <div class="icon-container mb-3">
+                                            <i class="fas fa-heartbeat fa-4x text-danger"></i>
+                                        </div>
+                                        <h3 class="mb-3">Heart Disease Detection</h3>
+                                        <p class="mb-4">Predict the likelihood of heart disease based on various health parameters including blood pressure, cholesterol levels, and more.</p>
+                                        <a href="@Url.Action("Index", "HeartDisease")" class="btn btn-primary btn-lg w-100">
+                                            <i class="fas fa-heartbeat me-2"></i>Start Heart Disease Detection
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="card h-100 shadow-sm hover-card">
+                                    <div class="card-body text-center p-4">
+                                        <div class="icon-container mb-3">
+                                            <i class="fas fa-prescription-bottle-alt fa-4x text-primary"></i>
+                                        </div>
+                                        <h3 class="mb-3">Diabetes Detection</h3>
+                                        <p class="mb-4">Predict the risk of diabetes based on health parameters including HbA1c levels, cholesterol, and patient demographics.</p>
+                                        <a href="@Url.Action("Index", "Diabetes")" class="btn btn-primary btn-lg w-100">
+                                            <i class="fas fa-prescription-bottle-alt me-2"></i>Start Diabetes Detection
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Future Disease Detection Option Placeholder -->
+                            <div class="col-md-6">
+                                <div class="card h-100 shadow-sm bg-light">
+                                    <div class="card-body text-center p-4">
+                                        <div class="coming-soon-badge mb-3">
+                                            <span class="badge bg-secondary p-2">Coming Soon</span>
+                                        </div>
+                                        <div class="icon-container mb-3 opacity-50">
+                                            <i class="fas fa-dna fa-4x text-secondary"></i>
+                                        </div>
+                                        <h3 class="mb-3">Cancer Risk Assessment</h3>
+                                        <p class="mb-4">Advanced cancer risk prediction based on genetic markers, lifestyle factors, and medical history.</p>
+                                        <button class="btn btn-secondary btn-lg w-100" disabled>
+                                            <i class="fas fa-dna me-2"></i>Not Available Yet
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Another Future Disease Detection Option Placeholder -->
+                            <div class="col-md-6">
+                                <div class="card h-100 shadow-sm bg-light">
+                                    <div class="card-body text-center p-4">
+                                        <div class="coming-soon-badge mb-3">
+                                            <span class="badge bg-secondary p-2">Coming Soon</span>
+                                        </div>
+                                        <div class="icon-container mb-3 opacity-50">
+                                            <i class="fas fa-brain fa-4x text-secondary"></i>
+                                        </div>
+                                        <h3 class="mb-3">Stroke Risk Assessment</h3>
+                                        <p class="mb-4">Evaluate stroke risk based on blood pressure, family history, and other relevant health factors.</p>
+                                        <button class="btn btn-secondary btn-lg w-100" disabled>
+                                            <i class="fas fa-brain me-2"></i>Not Available Yet
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Navigation Link -->
+                        <div class="text-center mt-5">
+                            <a href="@Url.Action("Index", "Home")" class="btn btn-outline-primary">
+                                <i class="fas fa-home me-2"></i> Return to Home
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <style>
+        .icon-container {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hover-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+    </style>
+}

@@ -1,0 +1,204 @@
+@model NewProject.Models.DiabetesResponse
+
+@{
+    ViewData["Title"] = "Diabetes Detection Results";
+}
+
+<section class="disease-result-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="text-center mb-0">Diabetes Detection Results</h2>
+                    </div>
+                    <div class="card-body p-4">
+                        <!-- Prediction Result Card -->
+                        <div class="result-card text-center p-4 mb-4 rounded @(Model.BinaryResult == "POSITIVE" ? "bg-danger-subtle" : "bg-success-subtle")">
+                            <h3 class="mb-3">@(Model.ClinicalStatus ?? Model.RiskLevel)</h3>
+                            
+                            <div class="prediction-result mb-4">
+                                <div class="prediction-badge @GetRiskLevelColor(Model.RiskLevel) p-3 fs-4 mb-3">
+                                    @Model.BinaryResult
+                                </div>
+                                <p class="lead mb-2">Risk Level: <strong>@Model.RiskLevel</strong></p>
+                                
+                                <!-- Probability Bar -->
+                                <div class="progress mb-3" style="height: 25px;">
+                                    @if (Model.Probabilities != null && Model.Probabilities.Count > 0)
+                                    {
+                                        var probability = Model.Probabilities.FirstOrDefault(p => p.Key == "positive" || p.Key == "POSITIVE").Value;
+                                        var displayProb = probability > 0 ? probability : (Model.BinaryResult == "POSITIVE" ? 0.8f : 0.2f);
+                                        
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated @GetRiskLevelColor(Model.RiskLevel)" 
+                                             role="progressbar" 
+                                             style="width: @(displayProb * 100)%;" 
+                                             aria-valuenow="@(displayProb * 100)" 
+                                             aria-valuemin="0" 
+                                             aria-valuemax="100">
+                                            @(displayProb.ToString("P0"))
+                                        </div>
+                                    }
+                                </div>
+                                
+                                <div class="alert @GetRiskLevelAlertColor(Model.RiskLevel) mt-3">
+                                    @Model.Message
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recommendation Section -->
+                        @if (!string.IsNullOrEmpty(Model.Recommendation))
+                        {
+                            <div class="recommendation-section mb-4">
+                                <h4 class="border-bottom pb-2 mb-3">Recommendations</h4>
+                                <div class="p-3 bg-light rounded shadow-sm">
+                                    <p class="mb-0">@Model.Recommendation</p>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- Key Indicators -->
+                        @if (Model.KeyIndicators != null && Model.KeyIndicators.Count > 0)
+                        {
+                            <div class="key-indicators-section mb-4">
+                                <h4 class="border-bottom pb-2 mb-3">Key Indicators</h4>
+                                <div class="row">
+                                    @foreach (var indicator in Model.KeyIndicators)
+                                    {
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card h-100 border-0 shadow-sm">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">@indicator.Key</h5>
+                                                    <p class="card-text fw-bold">@indicator.Value</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+
+                        <!-- Patient Data Summary -->
+                        <div class="patient-data-section">
+                            <h4 class="border-bottom pb-2 mb-3">Patient Data</h4>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-header bg-light">Demographics</div>
+                                        <div class="card-body">
+                                            <p><strong>Gender:</strong> @(ViewBag.PatientData.Gender == 1 ? "Female" : "Male")</p>
+                                            <p><strong>Age:</strong> @ViewBag.PatientData.Age years</p>
+                                            <p><strong>BMI:</strong> @ViewBag.PatientData.BMI 
+                                                <span class="badge @GetBadgeColorForStatus(ViewBag.BMIStatus)">@ViewBag.BMIStatus</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-header bg-light">Blood & Metabolism</div>
+                                        <div class="card-body">
+                                            <p><strong>HbA1c:</strong> @ViewBag.PatientData.HbA1c 
+                                                <span class="badge @GetHbA1cBadgeColor(ViewBag.HbA1cStatus)">@ViewBag.HbA1cStatus</span>
+                                            </p>
+                                            <p><strong>Urea:</strong> @ViewBag.PatientData.Urea mg/dl</p>
+                                            <p><strong>Creatinine:</strong> @ViewBag.PatientData.Cr mg/dl</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-header bg-light">Lipid Profile</div>
+                                        <div class="card-body">
+                                            <p><strong>Cholesterol:</strong> @ViewBag.PatientData.Chol 
+                                                <span class="badge @GetBadgeColorForStatus(ViewBag.CholesterolStatus)">@ViewBag.CholesterolStatus</span>
+                                            </p>
+                                            <p><strong>Triglycerides:</strong> @ViewBag.PatientData.TG 
+                                                <span class="badge @GetBadgeColorForStatus(ViewBag.TGStatus)">@ViewBag.TGStatus</span>
+                                            </p>
+                                            <p><strong>HDL:</strong> @ViewBag.PatientData.HDL 
+                                                <span class="badge @GetBadgeColorForStatus(ViewBag.HDLStatus)">@ViewBag.HDLStatus</span>
+                                            </p>
+                                            <p><strong>LDL:</strong> @ViewBag.PatientData.LDL 
+                                                <span class="badge @GetBadgeColorForStatus(ViewBag.LDLStatus)">@ViewBag.LDLStatus</span>
+                                            </p>
+                                            <p><strong>VLDL:</strong> @ViewBag.PatientData.VLDL</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
+                            <a href="@Url.Action("Index", "Diabetes")" class="btn btn-primary me-md-2">
+                                <i class="fas fa-redo me-2"></i>New Prediction
+                            </a>
+                            <a href="@Url.Action("Index", "Detection")" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Disease Detection Hub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@functions {
+    public string GetRiskLevelColor(string riskLevel)
+    {
+        return riskLevel?.Replace(" ", "").ToUpper() switch
+        {
+            "HIGHRISK" => "badge bg-danger",
+            "MODERATERISK" => "badge bg-warning text-dark",
+            _ => "badge bg-success"
+        };
+    }
+    
+    public string GetRiskLevelAlertColor(string riskLevel)
+    {
+        return riskLevel?.Replace(" ", "").ToUpper() switch
+        {
+            "HIGHRISK" => "alert-danger",
+            "MODERATERISK" => "alert-warning",
+            _ => "alert-success"
+        };
+    }
+    
+    public string GetBadgeColorForStatus(string status)
+    {
+        return status?.ToLower() switch
+        {
+            var s when s.Contains("normal") => "bg-success",
+            var s when s.Contains("desirable") => "bg-success",
+            var s when s.Contains("borderline") => "bg-warning",
+            var s when s.Contains("high") => "bg-danger",
+            var s when s.Contains("low") && !s.Contains("protective") => "bg-info",
+            var s when s.Contains("protective") => "bg-success",
+            var s when s.Contains("prediabetic") => "bg-warning",
+            var s when s.Contains("diabetic") => "bg-danger",
+            var s when s.Contains("underweight") => "bg-info",
+            var s when s.Contains("overweight") => "bg-warning",
+            var s when s.Contains("obese") => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+    
+    public string GetHbA1cBadgeColor(string status)
+    {
+        if (string.IsNullOrEmpty(status))
+        {
+            return "bg-secondary";
+        }
+        
+        return status.ToLower() switch
+        {
+            var s when s.Contains("normal") => "bg-success",
+            var s when s.Contains("prediabetic") => "bg-warning",
+            var s when s.Contains("diabetic") => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+}

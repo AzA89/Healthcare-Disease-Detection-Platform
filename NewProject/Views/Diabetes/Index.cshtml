@@ -1,0 +1,566 @@
+@model NewProject.Models.DiabetesRequest
+
+@{
+    ViewData["Title"] = "Diabetes Detection";
+}
+
+<section class="disease-detection-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-primary text-white p-3">
+                        <h2 class="text-center mb-0">Diabetes Risk Assessment</h2>
+                    </div>
+                    <div class="card-body p-4">
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                            </div>
+                        }
+
+                        <div class="p-4">
+                            <p class="lead mb-3">Predict the risk of diabetes based on various health parameters including HbA1c, BMI, cholesterol levels, and other biomarkers.</p>
+                            
+                            <!-- Test Cases Section -->
+                            <div class="test-cases-section mb-4">
+                                <h5>Quick Test Cases:</h5>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-outline-success" onclick="loadTestCase(1)">
+                                        <i class="fas fa-check-circle me-1"></i> Normal/Low Risk
+                                    </button>
+                                    <button type="button" class="btn btn-outline-warning" onclick="loadTestCase(2)">
+                                        <i class="fas fa-exclamation-circle me-1"></i> Medium Risk
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger" onclick="loadTestCase(3)">
+                                        <i class="fas fa-exclamation-triangle me-1"></i> Pre-diabetic
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger" onclick="loadTestCase(4)">
+                                        <i class="fas fa-exclamation-triangle me-1"></i> Diabetic
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Progress Indicator -->
+                        <div class="progress-indicator mb-4">
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: 0%;" id="formProgress"></div>
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <small>Demographics</small>
+                                <small>Blood Tests</small>
+                                <small>Lipid Profile</small>
+                            </div>
+                        </div>
+
+                        <form asp-controller="Diabetes" asp-action="Predict" method="post" id="diabetesForm">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            
+                            <!-- Section 1: Demographics -->
+                            <div class="form-section" id="section1">
+                                <h4 class="mb-3 border-bottom pb-2">Demographics & Basic Measurements</h4>
+                                
+                                <div class="row">
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label asp-for="Gender" class="form-label">Gender</label>
+                                        <select asp-for="Gender" class="form-select" required>
+                                            <option value="">Select gender</option>
+                                            <option value="0">Male</option>
+                                            <option value="1">Female</option>
+                                        </select>
+                                        <div class="form-text text-muted">Biological sex for medical assessment purposes</div>
+                                        <span asp-validation-for="Gender" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label asp-for="Age" class="form-label">Age</label>
+                                        <div class="input-group">
+                                            <input asp-for="Age" class="form-control" type="number" min="1" max="120" required />
+                                            <span class="input-group-text">years</span>
+                                        </div>
+                                        <div class="form-text text-muted">Patient's age in years (1-120)</div>
+                                        <span asp-validation-for="Age" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                
+                                <!-- BMI Calculator Section -->
+                                <div class="card bg-light mb-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title">BMI Calculator</h5>
+                                        <p class="card-text">Calculate your Body Mass Index (BMI) by entering your height and weight below.</p>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="height" class="form-label">Height</label>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="height" min="50" max="250" placeholder="Enter height">
+                                                    <select class="form-select" id="heightUnit" style="max-width: 80px;">
+                                                        <option value="cm">cm</option>
+                                                        <option value="in">in</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="weight" class="form-label">Weight</label>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="weight" min="1" max="500" placeholder="Enter weight">
+                                                    <select class="form-select" id="weightUnit" style="max-width: 80px;">
+                                                        <option value="kg">kg</option>
+                                                        <option value="lb">lb</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="d-grid gap-2">
+                                            <button type="button" class="btn btn-primary" onclick="calculateBMI()">Calculate BMI</button>
+                                        </div>
+                                        
+                                        <div id="bmiResult" class="mt-3 d-none">
+                                            <div class="alert alert-info">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="me-3">
+                                                        <i class="fas fa-calculator fa-2x"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h5 class="alert-heading mb-1">Your BMI: <span id="bmiValue">0</span></h5>
+                                                        <p class="mb-0">Category: <span id="bmiCategory">Unknown</span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group col-md-6 mb-3">
+                                    <label asp-for="BMI" class="form-label">BMI (Body Mass Index)</label>
+                                    <div class="input-group">
+                                        <input asp-for="BMI" class="form-control" id="bmiInput" type="number" min="10" max="70" step="0.1" required />
+                                        <span class="input-group-text">kg/m²</span>
+                                    </div>
+                                    <div class="form-text text-muted">Body Mass Index (10-70 kg/m²). Underweight: <18.5, Normal: 18.5-24.9, Overweight: 25-29.9, Obese: ≥30</div>
+                                    <span asp-validation-for="BMI" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="d-flex justify-content-end mt-4">
+                                    <button type="button" class="btn btn-primary" onclick="nextSection(1)">
+                                        Next <i class="fas fa-arrow-right ms-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Section 2: Blood Tests -->
+                            <div class="form-section d-none" id="section2">
+                                <h4 class="mb-3 border-bottom pb-2">Blood Tests</h4>
+                                
+                                <div class="row">
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label asp-for="Urea" class="form-label">Urea</label>
+                                        <div class="input-group">
+                                            <input asp-for="Urea" class="form-control" type="number" min="0.1" max="200" step="0.1" required />
+                                            <span class="input-group-text">mg/dl</span>
+                                        </div>
+                                        <div class="form-text text-muted">Blood urea nitrogen level (0.1-200 mg/dl). Normal range: 7-20 mg/dl</div>
+                                        <span asp-validation-for="Urea" class="text-danger"></span>
+                                    </div>
+                                    
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label asp-for="Cr" class="form-label">Creatinine</label>
+                                        <div class="input-group">
+                                            <input asp-for="Cr" class="form-control" type="number" min="0.1" max="1000" step="0.1" required />
+                                            <span class="input-group-text">mg/dl</span>
+                                        </div>
+                                        <div class="form-text text-muted">Kidney function marker (0.1-1000 mg/dl). Normal range: 0.7-1.3 mg/dl</div>
+                                        <span asp-validation-for="Cr" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label asp-for="HbA1c" class="form-label">HbA1c</label>
+                                        <div class="input-group">
+                                            <input asp-for="HbA1c" class="form-control" type="number" min="3.0" max="15.0" step="0.1" required />
+                                            <span class="input-group-text">%</span>
+                                        </div>
+                                        <div class="form-text text-muted">Glycated hemoglobin (3.0-15.0%). Normal: <5.7%, Prediabetic: 5.7-6.4%, Diabetic: ≥6.5%</div>
+                                        <span asp-validation-for="HbA1c" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert alert-info">
+                                    <div class="d-flex">
+                                        <div class="me-3">
+                                            <i class="fas fa-info-circle fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="alert-heading">About HbA1c</h5>
+                                            <p class="mb-0">HbA1c (glycated hemoglobin) measures your average blood sugar level over the past 2-3 months. It's one of the primary tests used to diagnose diabetes and monitor blood sugar control in people with diabetes.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="prevSection(2)">
+                                        <i class="fas fa-arrow-left me-1"></i> Previous
+                                    </button>
+                                    <button type="button" class="btn btn-primary" onclick="nextSection(2)">
+                                        Next <i class="fas fa-arrow-right ms-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Section 3: Lipid Profile -->
+                            <div class="form-section d-none" id="section3">
+                                <h4 class="mb-3 border-bottom pb-2">Lipid Profile</h4>
+                                
+                                <div class="row">
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label asp-for="Chol" class="form-label">Total Cholesterol</label>
+                                        <div class="input-group">
+                                            <input asp-for="Chol" class="form-control" type="number" min="50" max="600" required />
+                                            <span class="input-group-text">mg/dl</span>
+                                        </div>
+                                        <div class="form-text text-muted">Total cholesterol level (50-600 mg/dl). Desirable: <200 mg/dl</div>
+                                        <span asp-validation-for="Chol" class="text-danger"></span>
+                                    </div>
+                                    
+                                    <div class="form-group col-md-6 mb-3">
+                                        <label asp-for="TG" class="form-label">Triglycerides</label>
+                                        <div class="input-group">
+                                            <input asp-for="TG" class="form-control" type="number" min="0" max="1000" required />
+                                            <span class="input-group-text">mg/dl</span>
+                                        </div>
+                                        <div class="form-text text-muted">Blood fat level (0-1000 mg/dl). Normal: <150 mg/dl</div>
+                                        <span asp-validation-for="TG" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="form-group col-md-4 mb-3">
+                                        <label asp-for="HDL" class="form-label">HDL Cholesterol</label>
+                                        <div class="input-group">
+                                            <input asp-for="HDL" class="form-control" type="number" min="1" max="200" required />
+                                            <span class="input-group-text">mg/dl</span>
+                                        </div>
+                                        <div class="form-text text-muted">"Good" cholesterol (1-200 mg/dl). Optimal: >40 mg/dl for men, >50 mg/dl for women</div>
+                                        <span asp-validation-for="HDL" class="text-danger"></span>
+                                    </div>
+                                    
+                                    <div class="form-group col-md-4 mb-3">
+                                        <label asp-for="LDL" class="form-label">LDL Cholesterol</label>
+                                        <div class="input-group">
+                                            <input asp-for="LDL" class="form-control" type="number" min="1" max="600" required />
+                                            <span class="input-group-text">mg/dl</span>
+                                        </div>
+                                        <div class="form-text text-muted">"Bad" cholesterol (1-600 mg/dl). Optimal: <100 mg/dl</div>
+                                        <span asp-validation-for="LDL" class="text-danger"></span>
+                                    </div>
+                                    
+                                    <div class="form-group col-md-4 mb-3">
+                                        <label asp-for="VLDL" class="form-label">VLDL Cholesterol</label>
+                                        <div class="input-group">
+                                            <input asp-for="VLDL" class="form-control" type="number" min="0.1" max="200" step="0.1" required />
+                                            <span class="input-group-text">mg/dl</span>
+                                        </div>
+                                        <div class="form-text text-muted">Very low-density lipoprotein (0.1-200 mg/dl). Normal: <30 mg/dl</div>
+                                        <span asp-validation-for="VLDL" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert alert-info">
+                                    <div class="d-flex">
+                                        <div class="me-3">
+                                            <i class="fas fa-info-circle fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="alert-heading">About Lipid Profile</h5>
+                                            <p class="mb-0">A lipid profile is a blood test that measures the levels of different types of cholesterol and fats in your blood. High cholesterol levels can increase your risk of heart disease and diabetes.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="prevSection(3)">
+                                        <i class="fas fa-arrow-left me-1"></i> Previous
+                                    </button>
+                                    <button type="submit" class="btn btn-success btn-lg">
+                                        <i class="fas fa-prescription-bottle-alt me-2"></i> Predict Diabetes Risk
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <!-- Back button -->
+                        <div class="text-center mt-4">
+                            <a href="@Url.Action("Index", "Detection")" class="btn btn-outline-primary">
+                                <i class="fas fa-arrow-left me-2"></i> Back to Disease Detection Hub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+        
+        // Form navigation functions
+        function nextSection(currentSection) {
+            // Validate current section
+            const currentSectionElement = document.getElementById(`section${currentSection}`);
+            const inputs = currentSectionElement.querySelectorAll('input, select');
+            let isValid = true;
+            
+            inputs.forEach(input => {
+                if (input.hasAttribute('required') && !input.value) {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+            
+            if (!isValid) {
+                showToast('Please fill in all required fields before proceeding.', 'danger');
+                return;
+            }
+            
+            // Hide current section and show next section
+            document.getElementById(`section${currentSection}`).classList.add('d-none');
+            document.getElementById(`section${currentSection + 1}`).classList.remove('d-none');
+            
+            // Update progress bar
+            updateProgress(currentSection + 1);
+        }
+        
+        function prevSection(currentSection) {
+            // Hide current section and show previous section
+            document.getElementById(`section${currentSection}`).classList.add('d-none');
+            document.getElementById(`section${currentSection - 1}`).classList.remove('d-none');
+            
+            // Update progress bar
+            updateProgress(currentSection - 1);
+        }
+        
+        function updateProgress(section) {
+            const progressBar = document.getElementById('formProgress');
+            const totalSections = 3;
+            const progressPercentage = ((section - 1) / (totalSections - 1)) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+        }
+        
+        // BMI Calculator
+        function calculateBMI() {
+            // Get input values
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const heightUnit = document.getElementById('heightUnit').value;
+            const weightUnit = document.getElementById('weightUnit').value;
+            
+            // Validate inputs
+            if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
+                showToast('Please enter valid height and weight values.', 'danger');
+                return;
+            }
+            
+            // Convert to metric if needed
+            let heightInMeters = height;
+            let weightInKg = weight;
+            
+            if (heightUnit === 'in') {
+                heightInMeters = height * 0.0254; // Convert inches to meters
+            } else {
+                heightInMeters = height / 100; // Convert cm to meters
+            }
+            
+            if (weightUnit === 'lb') {
+                weightInKg = weight * 0.453592; // Convert pounds to kg
+            }
+            
+            // Calculate BMI
+            const bmi = weightInKg / (heightInMeters * heightInMeters);
+            
+            // Determine BMI category
+            let category = '';
+            let alertClass = '';
+            
+            if (bmi < 18.5) {
+                category = 'Underweight';
+                alertClass = 'alert-info';
+            } else if (bmi >= 18.5 && bmi < 25) {
+                category = 'Normal weight';
+                alertClass = 'alert-success';
+            } else if (bmi >= 25 && bmi < 30) {
+                category = 'Overweight';
+                alertClass = 'alert-warning';
+            } else {
+                category = 'Obese';
+                alertClass = 'alert-danger';
+            }
+            
+            // Display result
+            document.getElementById('bmiValue').textContent = bmi.toFixed(1);
+            document.getElementById('bmiCategory').textContent = category;
+            document.getElementById('bmiResult').classList.remove('d-none');
+            document.getElementById('bmiResult').querySelector('.alert').className = `alert ${alertClass}`;
+            
+            // Update BMI input in the form
+            document.getElementById('bmiInput').value = bmi.toFixed(1);
+            
+            // Show success message
+            showToast('BMI calculated successfully!', 'success');
+        }
+        
+        // Show toast notification
+        function showToast(message, type = 'danger') {
+            // Create toast container if it doesn't exist
+            let toastContainer = document.getElementById('toastContainer');
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.id = 'toastContainer';
+                toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+                document.body.appendChild(toastContainer);
+            }
+            
+            // Create toast
+            const toastId = `toast-${Date.now()}`;
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.id = toastId;
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+            
+            const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            const title = type === 'success' ? 'Success' : 'Validation Error';
+            
+            toast.innerHTML = `
+                <div class="toast-header bg-${type} text-white">
+                    <i class="fas ${iconClass} me-2"></i>
+                    <strong class="me-auto">${title}</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    ${message}
+                </div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Show toast
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+            
+            // Remove toast after it's hidden
+            toast.addEventListener('hidden.bs.toast', function () {
+                toast.remove();
+            });
+        }
+        
+        // Test case loading function
+        function loadTestCase(caseNumber) {
+            switch(caseNumber) {
+                case 1: // Normal/Negative - Low Risk
+                    document.querySelector('[name="Gender"]').value = "1";
+                    document.querySelector('[name="Age"]').value = "30";
+                    document.querySelector('[name="Urea"]').value = "4.7";
+                    document.querySelector('[name="Cr"]').value = "46";
+                    document.querySelector('[name="HbA1c"]').value = "4.9";
+                    document.querySelector('[name="Chol"]').value = "180";
+                    document.querySelector('[name="TG"]').value = "90";
+                    document.querySelector('[name="HDL"]').value = "60";
+                    document.querySelector('[name="LDL"]').value = "100";
+                    document.querySelector('[name="VLDL"]').value = "18";
+                    document.querySelector('[name="BMI"]').value = "22.5";
+                    break;
+                    
+                case 2: // Negative - Medium Risk
+                    document.querySelector('[name="Gender"]').value = "0";
+                    document.querySelector('[name="Age"]').value = "45";
+                    document.querySelector('[name="Urea"]').value = "5.5";
+                    document.querySelector('[name="Cr"]').value = "74";
+                    document.querySelector('[name="HbA1c"]').value = "5.7";
+                    document.querySelector('[name="Chol"]').value = "230";
+                    document.querySelector('[name="TG"]').value = "150";
+                    document.querySelector('[name="HDL"]').value = "45";
+                    document.querySelector('[name="LDL"]').value = "150";
+                    document.querySelector('[name="VLDL"]').value = "30";
+                    document.querySelector('[name="BMI"]').value = "26";
+                    break;
+                    
+                case 3: // Pre-diabetic - High Risk
+                    document.querySelector('[name="Gender"]').value = "0";
+                    document.querySelector('[name="Age"]').value = "42";
+                    document.querySelector('[name="Urea"]').value = "5.4";
+                    document.querySelector('[name="Cr"]').value = "53";
+                    document.querySelector('[name="HbA1c"]').value = "5.8";
+                    document.querySelector('[name="Chol"]').value = "250";
+                    document.querySelector('[name="TG"]').value = "200";
+                    document.querySelector('[name="HDL"]').value = "35";
+                    document.querySelector('[name="LDL"]').value = "180";
+                    document.querySelector('[name="VLDL"]').value = "40";
+                    document.querySelector('[name="BMI"]').value = "23";
+                    break;
+                    
+                case 4: // Diabetic - Medium Risk
+                    document.querySelector('[name="Gender"]').value = "0";
+                    document.querySelector('[name="Age"]').value = "55";
+                    document.querySelector('[name="Urea"]').value = "5.66";
+                    document.querySelector('[name="Cr"]').value = "61";
+                    document.querySelector('[name="HbA1c"]').value = "7.7";
+                    document.querySelector('[name="Chol"]').value = "220";
+                    document.querySelector('[name="TG"]').value = "180";
+                    document.querySelector('[name="HDL"]').value = "40";
+                    document.querySelector('[name="LDL"]').value = "160";
+                    document.querySelector('[name="VLDL"]').value = "36";
+                    document.querySelector('[name="BMI"]').value = "32.9";
+                    break;
+                    
+                case 5: // Severe Diabetic - High Risk
+                    document.querySelector('[name="Gender"]').value = "0";
+                    document.querySelector('[name="Age"]').value = "58";
+                    document.querySelector('[name="Urea"]').value = "20.8";
+                    document.querySelector('[name="Cr"]').value = "800";
+                    document.querySelector('[name="HbA1c"]').value = "9.1";
+                    document.querySelector('[name="Chol"]').value = "280";
+                    document.querySelector('[name="TG"]').value = "250";
+                    document.querySelector('[name="HDL"]').value = "30";
+                    document.querySelector('[name="LDL"]').value = "200";
+                    document.querySelector('[name="VLDL"]').value = "50";
+                    document.querySelector('[name="BMI"]').value = "33";
+                    break;
+            }
+            
+            // Show success message
+            showToast('Test case loaded successfully. Please navigate through the form to review all data.', 'success');
+            
+            // Reset to first section
+            document.getElementById('section1').classList.remove('d-none');
+            document.getElementById('section2').classList.add('d-none');
+            document.getElementById('section3').classList.add('d-none');
+            updateProgress(1);
+        }
+    </script>
+    
+    <style>
+        .form-section {
+            transition: all 0.3s ease;
+        }
+        
+        .progress-indicator {
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+    </style>
+}

@@ -1,0 +1,433 @@
+@{
+    ViewData["Title"] = "Symptom Checker";
+}
+
+<div class="container py-5 mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 mb-3">AI Symptom Checker</h1>
+        <p class="lead">Select your symptoms for AI-powered disease prediction</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <form id="symptomCheckerForm">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Filter by Body Region</label>
+                            <select class="form-select" id="bodyRegionFilter">
+                                <option value="all">All Body Regions</option>
+                                <!-- Body regions will be populated from the dictionary -->
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Select Your Symptoms</label>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i> Please select all symptoms you are experiencing
+                            </div>
+                            
+                            <div id="symptomsContainer">
+                                <!-- Symptoms will be populated here from the dictionary -->
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Selected Symptoms</label>
+                            <div id="selectedSymptoms" class="border rounded p-3" style="min-height: 100px;">
+                                <p class="text-muted mb-0" id="noSymptomsText">No symptoms selected yet. Please check the symptoms you are experiencing above.</p>
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-stethoscope me-2"></i> Analyze Symptoms
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Results Section (Initially Hidden) -->
+            <div id="analysisResults" class="mt-4 d-none">
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        <h3 class="mb-4">Analysis Results</h3>
+                        <div class="alert alert-warning mb-4">
+                            <div class="d-flex">
+                                <div class="me-3">
+                                    <i class="fas fa-exclamation-triangle fa-2x text-warning"></i>
+                                </div>
+                                <div>
+                                    <h5 class="alert-heading">Medical Disclaimer</h5>
+                                    <p class="mb-0">This AI analysis is for informational purposes only and should not be considered medical advice. Please consult with a qualified healthcare professional for proper diagnosis and treatment.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Loading indicator -->
+                        <div id="loadingResults" class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Analyzing symptoms...</span>
+                            </div>
+                            <p class="mt-2">Analyzing your symptoms...</p>
+                        </div>
+                        
+                        <!-- Error message (initially hidden) -->
+                        <div id="apiError" class="alert alert-danger d-none">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <span id="errorMessage">An error occurred while analyzing your symptoms. Please try again.</span>
+                        </div>
+                        
+                        <!-- Results container -->
+                        <div id="predictionsContainer" class="d-none">
+                            <!-- Predictions will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    $(document).ready(function() {
+        // API endpoint - use the ASP.NET controller as a proxy to the Flask API
+        const API_URL = "/Symptom/Predict";
+        
+        // Track selected symptoms
+        const selectedSymptoms = new Set();
+        
+        // Symptoms dictionary organized by body region
+        const symptoms_dict = {
+            "Skin": ["itching", "skin rash", "nodal skin eruptions", "yellowish skin", "bruising", "brittle nails", "internal itching",
+                    "red spots over body", "pus filled pimples", "blackheads", "scurring", "skin peeling", "silver like dusting", 
+                    "small dents in nails", "inflammatory nails", "blister", "red sore around nose", "yellow crust ooze"],
+            "Respiratory": ["continuous sneezing", "cough", "breathlessness", "phlegm", "throat irritation", "sinus pressure", "runny nose", "congestion",
+                            "mucoid sputum", "rusty sputum", "blood in sputum"],
+            "General": ["shivering", "chills", "fatigue", "high fever", "sweating", "dehydration", "malaise", "lethargy", "mild fever", "toxic look (typhos)"],
+            "Musculoskeletal": ["joint pain", "muscle wasting", "back pain", "weakness in limbs", "muscle weakness", "movement stiffness", "stiff neck", 
+                                "swelling joints", "spinning movements", "cramps", "knee pain", "hip joint pain", "painful walking", "muscle pain"],
+            "Gastrointestinal": ["stomach pain", "acidity", "vomiting", "indigestion", "nausea", "loss of appetite", "constipation", "abdominal pain", 
+                                "diarrhoea", "pain during bowel movements", "pain in anal region", "bloody stool", "irritation in anus", "stomach bleeding",
+                                "distention of abdomen", "belly pain", "passage of gases", "acute liver failure", "swelling of stomach"],
+            "Urinary": ["burning micturition", "dark urine", "yellow urine", "bladder discomfort", "continuous feel of urine", "polyuria"],
+            "Cardiovascular": ["fast heart rate", "chest pain", "fluid overload", "swollen legs", "swollen blood vessels", "prominent veins on calf", "palpitations"],
+            "Neurological": ["headache", "dizziness", "unsteadiness", "weakness of one body side", "slurred speech", "loss of balance", "altered sensorium",
+                            "spinning movements", "lack of concentration", "visual disturbances", "coma"],
+            "Endocrine": ["weight gain", "weight loss", "irregular sugar level", "excessive hunger", "increased appetite", "obesity", "enlarged thyroid"],
+            "Psychological": ["anxiety", "mood swings", "restlessness", "depression", "irritability"],
+            "Oral": ["ulcers on tongue", "patches in throat", "drying and tingling lips"],
+            "Ocular": ["pain behind the eyes", "redness of eyes", "blurred and distorted vision", "yellowing of eyes", "watering from eyes", "loss of smell"],
+            "Lymphatic": ["swelled lymph nodes"],
+            "Reproductive": ["abnormal menstruation"],
+            "Risk Factor": ["extra marital contacts", "family history", "receiving blood transfusion", "receiving unsterile injections", "history of alcohol consumption"]
+        };
+        
+        // Initialize the page
+        initializeSymptomChecker();
+        
+        function initializeSymptomChecker() {
+            // Populate body region filter
+            const bodyRegionFilter = $('#bodyRegionFilter');
+            Object.keys(symptoms_dict).sort().forEach(region => {
+                bodyRegionFilter.append(`<option value="${region}">${region}</option>`);
+            });
+            
+            // Create symptom checkboxes
+            createSymptomCheckboxes(symptoms_dict);
+            
+            // Set up body region filter
+            bodyRegionFilter.on('change', function() {
+                const selectedRegion = $(this).val();
+                
+                if (selectedRegion === 'all') {
+                    $('.symptom-region').removeClass('d-none');
+                } else {
+                    $('.symptom-region').addClass('d-none');
+                    $(`.symptom-region[data-region="${selectedRegion}"]`).removeClass('d-none');
+                }
+            });
+        }
+        
+        // Create symptom checkboxes grouped by body region
+        function createSymptomCheckboxes(symptomsByRegion) {
+            const container = $('#symptomsContainer');
+            container.empty();
+            
+            // Sort regions alphabetically
+            const sortedRegions = Object.keys(symptomsByRegion).sort();
+            
+            sortedRegions.forEach(region => {
+                const symptoms = symptomsByRegion[region].sort();
+                
+                const regionDiv = $(`
+                    <div class="symptom-region mb-4" data-region="${region}">
+                        <h5 class="border-bottom pb-2 mb-3">${region}</h5>
+                        <div class="row"></div>
+                    </div>
+                `);
+                
+                const row = regionDiv.find('.row');
+                
+                symptoms.forEach(symptomId => {
+                    // Format symptom name for display (capitalize first letter of each word)
+                    const symptomName = symptomId
+                        .replace(/\b\w/g, l => l.toUpperCase());
+                    
+                    const col = $(`
+                        <div class="col-md-4 col-sm-6 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input symptom-checkbox" type="checkbox" 
+                                       id="symptom_${symptomId.replace(/ /g, '_')}" value="${symptomId}" 
+                                       data-name="${symptomName}">
+                                <label class="form-check-label" for="symptom_${symptomId.replace(/ /g, '_')}">
+                                    ${symptomName}
+                                </label>
+                            </div>
+                        </div>
+                    `);
+                    
+                    row.append(col);
+                });
+                
+                container.append(regionDiv);
+            });
+            
+            // Set up symptom checkbox event handlers
+            $('.symptom-checkbox').on('change', function() {
+                const symptomId = $(this).val();
+                const symptomName = $(this).data('name');
+                
+                if ($(this).is(':checked')) {
+                    addSelectedSymptom(symptomId, symptomName);
+                } else {
+                    removeSelectedSymptom(symptomId);
+                }
+                
+                updateSelectedSymptomsList();
+            });
+        }
+        
+        // Add a symptom to the selected list
+        function addSelectedSymptom(id, name) {
+            selectedSymptoms.add({
+                id: id,
+                name: name
+            });
+        }
+        
+        // Remove a symptom from the selected list
+        function removeSelectedSymptom(id) {
+            const symptomToRemove = Array.from(selectedSymptoms).find(s => s.id === id);
+            if (symptomToRemove) {
+                selectedSymptoms.delete(symptomToRemove);
+            }
+        }
+        
+        // Update the selected symptoms display
+        function updateSelectedSymptomsList() {
+            const container = $('#selectedSymptoms');
+            const noSymptomsText = $('#noSymptomsText');
+            
+            if (selectedSymptoms.size > 0) {
+                noSymptomsText.hide();
+                
+                // Clear and rebuild symptoms list
+                container.find('.selected-symptom-badge').remove();
+                
+                // Add each symptom as a visual element
+                Array.from(selectedSymptoms).forEach(symptom => {
+                    const symptomElement = $(`
+                        <div class="selected-symptom-badge d-inline-block bg-primary text-white rounded-pill px-3 py-2 me-2 mb-2">
+                            ${symptom.name}
+                            <button type="button" class="btn-close btn-close-white btn-sm ms-2" 
+                                    data-id="${symptom.id}" aria-label="Remove"></button>
+                        </div>
+                    `);
+                    
+                    container.append(symptomElement);
+                });
+            } else {
+                noSymptomsText.show();
+                container.find('.selected-symptom-badge').remove();
+            }
+        }
+        
+        // Handle removing symptoms via the badge close button
+        $(document).on('click', '.selected-symptom-badge .btn-close', function() {
+            const symptomId = $(this).data('id');
+            
+            // Uncheck the corresponding checkbox
+            $(`#symptom_${symptomId.replace(/ /g, '_')}`).prop('checked', false);
+            
+            // Remove from selected symptoms
+            removeSelectedSymptom(symptomId);
+            
+            // Update display
+            updateSelectedSymptomsList();
+        });
+        
+        // Form validation before submission
+        $('#symptomCheckerForm').on('submit', function(e) {
+            e.preventDefault();
+            
+            if (selectedSymptoms.size === 0) {
+                alert('Please select at least one symptom before analyzing.');
+                return false;
+            }
+            
+            // Show results section and loading indicator
+            $('#analysisResults').removeClass('d-none');
+            $('#loadingResults').removeClass('d-none');
+            $('#apiError').addClass('d-none');
+            $('#predictionsContainer').addClass('d-none');
+            
+            // Scroll to results
+            $('html, body').animate({
+                scrollTop: $("#analysisResults").offset().top - 100
+            }, 500);
+            
+            // Prepare data for API - use the raw symptom IDs without formatting
+            const symptomsList = Array.from(selectedSymptoms).map(s => s.id);
+            const requestData = {
+                symptoms: symptomsList,
+                topN: 3  // Get top 3 predictions
+            };
+            
+            // Call the API through our ASP.NET controller
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Hide loading indicator
+                $('#loadingResults').addClass('d-none');
+                
+                // Display predictions
+                displayPredictions(data.predictions);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                $('#loadingResults').addClass('d-none');
+                $('#apiError').removeClass('d-none');
+                $('#errorMessage').text(`Error: ${error.message}. Make sure the API server is running.`);
+            });
+        });
+        
+        // Display predictions from API
+        function displayPredictions(predictions) {
+            const container = $('#predictionsContainer');
+            container.empty();
+            
+            if (!predictions || predictions.length === 0) {
+                container.html(`
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        No predictions could be made based on the selected symptoms. Please try selecting different symptoms.
+                    </div>
+                `);
+                container.removeClass('d-none');
+                return;
+            }
+            
+            // Create HTML for predictions
+            let predictionsHtml = `
+                <div class="mb-4">
+                    <h4>Potential Diagnoses</h4>
+                    <p class="text-muted">Based on your selected symptoms, our AI model predicts the following conditions:</p>
+                </div>
+            `;
+            
+            // Add each prediction
+            predictions.forEach((prediction, index) => {
+                const confidencePercent = Math.round(prediction.probability * 100);
+                
+                // Determine confidence class based on percentage
+                let confidenceClass, confidenceBadge;
+                if (confidencePercent > 70) {
+                    confidenceClass = 'bg-danger';
+                    confidenceBadge = 'High';
+                } else if (confidencePercent > 30) {
+                    confidenceClass = 'bg-warning';
+                    confidenceBadge = 'Moderate';
+                } else {
+                    confidenceClass = 'bg-info';
+                    confidenceBadge = 'Low';
+                }
+                
+                // Format disease name for display
+                const diseaseName = prediction.disease
+                    .replace(/_/g, ' ')
+                    .replace(/\b\w/g, l => l.toUpperCase());
+                
+                predictionsHtml += `
+                    <div class="card mb-4 border-0 shadow-sm">
+                        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">${index + 1}. ${diseaseName}</h5>
+                            <div>
+                                <span class="badge ${confidenceClass} me-2">${confidenceBadge}</span>
+                                <span class="badge bg-secondary">${confidencePercent}% match</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-2">Description</h6>
+                            <p>${prediction.description}</p>
+                `;
+                
+                // Only add precautions section if there are actual precautions
+                if (prediction.precautions && prediction.precautions.length > 0 && 
+                    prediction.precautions[0] !== "No precautions available.") {
+                    
+                    predictionsHtml += `
+                        <h6 class="fw-bold mb-2 mt-3">Precautions</h6>
+                        <ul class="list-group list-group-flush">
+                    `;
+                    
+                    prediction.precautions.forEach(precaution => {
+                        predictionsHtml += `
+                            <li class="list-group-item bg-transparent ps-0">
+                                <i class="fas fa-check-circle text-success me-2"></i> ${precaution}
+                            </li>
+                        `;
+                    });
+                    
+                    predictionsHtml += `</ul>`;
+                }
+                
+                predictionsHtml += `
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Add a disclaimer and next steps
+            predictionsHtml += `
+                <div class="alert alert-info mt-4">
+                    <h6 class="fw-bold">Next Steps</h6>
+                    <p class="mb-2">Based on these predictions, consider the following steps:</p>
+                    <ul class="mb-0">
+                        <li>Consult with a healthcare professional for proper diagnosis</li>
+                        <li>Follow the recommended precautions</li>
+                        <li>Monitor your symptoms and seek immediate medical attention if they worsen</li>
+                    </ul>
+                </div>
+            `;
+            
+            // Display the predictions
+            container.html(predictionsHtml);
+            container.removeClass('d-none');
+        }
+    });
+</script>
+}

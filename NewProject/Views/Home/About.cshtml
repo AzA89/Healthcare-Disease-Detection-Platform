@@ -1,0 +1,129 @@
+@{
+    ViewData["Title"] = "About Us";
+}
+
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-4 mb-3">About Medical AI Platform</h1>
+            <p class="lead text-muted">
+                Revolutionizing healthcare through artificial intelligence and machine learning.
+            </p>
+        </div>
+    </div>
+
+    <!-- Mission Section -->
+    <div class="row align-items-center mb-5" class="col-lg-6">
+            <h2 class="mb-3">Our Mission</h2>
+            <p>
+                At Medical AI Platform, our mission is to make advanced healthcare diagnostics accessible to everyone.
+                We believe that early detection and prevention are key to improving health outcomes and quality of life.
+            </p>
+            <p>
+                By leveraging the power of artificial intelligence and machine learning, we aim to provide accurate,
+                reliable, and user-friendly tools that help individuals understand their health risks and make informed decisions.
+            </p>
+            <p>
+                Our platform is designed to complement, not replace, professional medical care. We encourage users to
+                share their assessment results with healthcare providers for proper diagnosis and treatment.
+            </p>
+    </div>
+
+    <!-- Our Technology Section -->
+    <div class="bg-light p-4 rounded mb-5">
+        <div class="row align-items-center" class="col-lg-6 order-lg-1">
+                <h2 class="mb-3">Our Technology</h2>
+                <p>
+                    Our platform utilizes state-of-the-art machine learning algorithms trained on extensive medical datasets.
+                    These models have been developed in collaboration with healthcare professionals and data scientists to
+                    ensure accuracy and reliability.
+                </p>
+                <p>
+                    Key features of our technology include:
+                </p>
+                <ul>
+                    <li>Advanced predictive models for heart disease and diabetes risk assessment</li>
+                    <li>Comprehensive symptom checker with multi-disease prediction capabilities</li>
+                    <li>Personalized health recommendations based on individual risk factors</li>
+                    <li>Regular model updates to incorporate the latest medical research</li>
+                    <li>Strict data privacy and security measures to protect user information</li>
+                </ul>
+        </div>
+    </div>
+
+    <!-- Team Section -->
+    <h2 class="text-center mb-4">Our Team</h2>
+    <div class="row row-cols-1 row-cols-md-4 g-4 mb-5">
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Dr. Sarah Johnson</h5>
+                    <p class="card-text text-muted">Medical Director</p>
+                    <p class="card-text small">
+                        Board-certified cardiologist with over 15 years of clinical experience. Leads our medical validation team.
+                    </p>
+                    <div class="social-icons">
+                        <a href="#" class="text-muted me-2"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-muted"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Dr. Michael Chen</h5>
+                    <p class="card-text text-muted">AI Research Lead</p>
+                    <p class="card-text small">
+                        PhD in Machine Learning with expertise in healthcare applications. Oversees our AI model development.
+                    </p>
+                    <div class="social-icons">
+                        <a href="#" class="text-muted me-2"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-muted"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Emily Rodriguez</h5>
+                    <p class="card-text text-muted">Product Manager</p>
+                    <p class="card-text small">
+                        Experienced healthcare product manager focused on creating intuitive and accessible user experiences.
+                    </p>
+                    <div class="social-icons">
+                        <a href="#" class="text-muted me-2"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-muted"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">David Thompson</h5>
+                    <p class="card-text text-muted">Software Engineer</p>
+                    <p class="card-text small">
+                        Full-stack developer with a passion for healthcare technology and creating secure, scalable applications.
+                    </p>
+                    <div class="social-icons">
+                        <a href="#" class="text-muted me-2"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-muted"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact CTA -->
+    <div class="bg-primary text-white p-4 rounded text-center">
+        <h2 class="mb-3">Have Questions?</h2>
+        <p class="lead mb-4">
+            We're here to help. Contact our team for more information about our platform or to discuss potential collaborations.
+        </p>
+        <a asp-controller="Home" asp-action="Contact" class="btn btn-light btn-lg">
+            <i class="fas fa-envelope me-2"></i> Contact Us
+        </a>
+    </div>
+</div>
